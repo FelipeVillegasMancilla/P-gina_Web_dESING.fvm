@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tu Nombre — Portafolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     PALETA DE COLORES — cambia aquí y se actualiza todo el sitio
+     ========================================================= */
+  :root{
+    --bosque:#1F3A2E;   /* texto principal y sello */
+    --musgo:#4E6B4A;    /* acentos y botones activos */
+    --salvia:#9DB19A;   /* bordes y detalles suaves */
+    --liquen:#D3DECB;   /* fondos de tarjetas */
+    --niebla:#EEF2EA;   /* fondo general */
+    --blanco:#FAFCF8;   /* fondo de la ventana de proyecto */
+    --texto:var(--bosque);
+    --texto-suave:#55695A;
+    --fondo:var(--niebla);
+    --serif:"Fraunces", Georgia, "Times New Roman", serif;
+    --sans:"Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  /* Modo oscuro automático */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --texto:#DCE6D6; --texto-suave:#A3B5A0; --fondo:#15241C;
+      --liquen:#22362B; --blanco:#1B2D23; --musgo:#9DB19A; --salvia:#4E6B4A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --texto:#DCE6D6; --texto-suave:#A3B5A0; --fondo:#15241C;
+    --liquen:#22362B; --blanco:#1B2D23; --musgo:#9DB19A; --salvia:#4E6B4A;
+  }
+
+  /* ---------- Base ---------- */
+  *,*::before,*::after{box-sizing:inherit}
+  html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+  body{margin:0;background:var(--fondo);color:var(--texto);font-family:var(--sans);font-size:1.0625rem;line-height:1.6}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  button{font:inherit;color:inherit;cursor:pointer}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--musgo);outline-offset:4px;border-radius:2px}
+  .contenedor{width:min(1120px,100% - 3rem);margin-inline:auto}
+  .ayuda{font-size:.95rem;color:var(--texto-suave);margin:-1.75rem 0 2rem}
+
+  /* ---------- Navegación ---------- */
+  header{padding:1.75rem 0}
+  nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+  .marca{font-family:var(--serif);font-size:1.25rem;text-decoration:none}
+  nav ul{list-style:none;display:flex;gap:1.5rem;margin:0;padding:0;flex-wrap:wrap}
+  nav ul a{text-decoration:none;color:var(--texto-suave);font-weight:500}
+  nav ul a:hover{color:var(--texto)}
+
+  /* ---------- Portada con sello ---------- */
+  .portada{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:3rem;min-height:68vh;padding:3rem 0 4rem}
+  .portada h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.75rem,7vw,5.5rem);line-height:1.02;letter-spacing:-.02em;margin:0 0 1.5rem}
+  .portada p{max-width:38ch;color:var(--texto-suave);font-size:1.2rem;margin:0 0 2rem}
+  .boton{display:inline-block;padding:.85rem 1.6rem;border:1.5px solid var(--texto);border-radius:999px;text-decoration:none;font-weight:600;background:none;transition:background .2s,color .2s}
+  .boton:hover{background:var(--texto);color:var(--fondo)}
+
+  .sello{justify-self:center;width:min(340px,80vw);aspect-ratio:1;background:none;border:0;padding:0}
+  .sello svg{width:100%;height:100%;overflow:visible}
+  .sello .anillo{transform-origin:100px 100px;animation:girar 2.4s cubic-bezier(.2,.7,.2,1) both}
+  .sello.gira .anillo{animation:girar-otra 1.6s cubic-bezier(.2,.7,.2,1)}
+  .sello-nota{display:block;text-align:center;font-size:.85rem;color:var(--texto-suave);margin-top:.5rem}
+  @keyframes girar{from{transform:rotate(-120deg);opacity:0}to{transform:rotate(0);opacity:1}}
+  @keyframes girar-otra{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+  /* ---------- Secciones ---------- */
+  section{padding:5rem 0}
+  h2{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,4vw,3rem);margin:0 0 2.5rem;letter-spacing:-.01em}
+
+  /* ---------- Cómo trabajo (pestañas) ---------- */
+  .metodo{display:grid;grid-template-columns:minmax(220px,1fr) 2fr;gap:2.5rem;align-items:start}
+  .pasos{display:flex;flex-direction:column;gap:.25rem;border-left:1.5px solid var(--salvia)}
+  .paso{display:flex;gap:1rem;align-items:baseline;text-align:left;background:none;border:0;padding:.85rem 1.25rem;margin-left:-1.5px;border-left:3px solid transparent;color:var(--texto-suave);font-size:1.1rem}
+  .paso span{font-family:var(--serif);font-size:.95rem;color:var(--salvia)}
+  .paso:hover{color:var(--texto)}
+  .paso[aria-selected="true"]{color:var(--texto);border-left-color:var(--musgo);font-weight:600}
+  .paso[aria-selected="true"] span{color:var(--musgo)}
+  .panel{background:var(--liquen);border-radius:4px;padding:2.25rem;min-height:260px}
+  .panel h3{font-family:var(--serif);font-weight:500;font-size:1.6rem;margin:0 0 .75rem}
+  .panel p{margin:0 0 1.25rem;max-width:58ch}
+  .panel ul{margin:0;padding-left:1.1rem;color:var(--texto-suave)}
+  .panel ul li{margin-bottom:.35rem}
+  .barra{height:3px;background:var(--fondo);border-radius:3px;margin-top:2rem;overflow:hidden}
+  .barra div{height:100%;background:var(--musgo);transition:width .4s ease}
+
+  /* ---------- Proyectos y filtros ---------- */
+  .filtros{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2.5rem}
+  .filtro{padding:.45rem 1.05rem;border:1px solid var(--salvia);border-radius:999px;background:none;color:var(--texto-suave);font-size:.95rem}
+  .filtro[aria-pressed="true"]{background:var(--musgo);border-color:var(--musgo);color:var(--niebla)}
+  .proyectos{display:grid;grid-template-columns:repeat(2,1fr);gap:2.5rem 2rem}
+  .proyecto{display:block;width:100%;text-align:left;background:none;border:0;padding:0}
+  .proyecto[hidden]{display:none}
+  .proyecto .imagen{aspect-ratio:4/3;background:var(--liquen);border-radius:4px;display:grid;place-items:center;overflow:hidden;position:relative}
+  .proyecto .imagen svg{width:36%;opacity:.55;transition:transform .5s ease}
+  .proyecto:hover .imagen svg{transform:scale(1.08)}
+  .proyecto .ver{position:absolute;bottom:1rem;right:1rem;background:var(--fondo);padding:.35rem .85rem;border-radius:999px;font-size:.85rem;font-weight:600;opacity:0;transition:opacity .2s}
+  .proyecto:hover .ver,.proyecto:focus-visible .ver{opacity:1}
+  .proyecto h3{font-family:var(--serif);font-weight:500;font-size:1.4rem;margin:1rem 0 .25rem}
+  .proyecto p{margin:0;color:var(--texto-suave)}
+  .etiqueta{display:inline-block;font-size:.85rem;color:var(--musgo);margin-top:.4rem}
+
+  /* ---------- Ventana de proyecto ---------- */
+  dialog{border:0;border-radius:6px;padding:0;width:min(760px,100% - 2rem);max-height:88vh;background:var(--blanco);color:var(--texto)}
+  dialog::backdrop{background:rgba(21,36,28,.55)}
+  .ficha{padding:2.5rem}
+  .ficha .cerrar{position:sticky;top:0;float:right;background:var(--liquen);border:0;border-radius:999px;padding:.4rem 1rem;font-weight:600}
+  .ficha h3{font-family:var(--serif);font-weight:300;font-size:2.2rem;margin:0 0 .25rem;line-height:1.1}
+  .ficha .meta{color:var(--texto-suave);margin:0 0 2rem}
+  .ficha h4{font-size:1rem;margin:2rem 0 .5rem;color:var(--musgo)}
+  .ficha p{margin:0;max-width:62ch}
+  .linea{list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:1rem}
+  .linea li{display:grid;grid-template-columns:2.25rem 1fr;gap:.75rem}
+  .linea .num{width:2.25rem;height:2.25rem;border-radius:50%;border:1.5px solid var(--salvia);display:grid;place-items:center;font-family:var(--serif);font-size:.95rem}
+  .linea strong{display:block}
+  .materiales{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;padding:0;margin:.5rem 0 0}
+  .materiales li{padding:.3rem .8rem;background:var(--liquen);border-radius:999px;font-size:.9rem}
+
+  /* ---------- Sobre mí ---------- */
+  .sobre{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start}
+  .sobre .texto p{margin:0 0 1.2rem;max-width:62ch}
+  .habilidades{display:grid;gap:1.1rem;padding:0;margin:2rem 0 0;list-style:none}
+  .habilidades .fila{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:.35rem}
+  .habilidades .fila em{font-style:normal;color:var(--texto-suave)}
+  .nivel{height:6px;border-radius:6px;background:var(--liquen);overflow:hidden}
+  .nivel div{height:100%;background:var(--musgo);border-radius:6px}
+
+  /* ---------- Contacto ---------- */
+  .contacto{text-align:center;border-top:1px solid var(--salvia)}
+  .contacto p{color:var(--texto-suave);margin:0 auto 2rem;max-width:44ch}
+  .contacto .correo{font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.5rem);background:none;border:0;border-bottom:1.5px solid var(--salvia);padding:0}
+  .contacto .correo:hover{border-color:var(--texto)}
+  .copiado{display:block;min-height:1.5rem;margin-top:.75rem;font-size:.9rem;color:var(--musgo)}
+  .redes{display:flex;justify-content:center;flex-wrap:wrap;gap:1.5rem;list-style:none;padding:0;margin:2rem 0 0}
+  .redes a{color:var(--texto-suave)}
+
+  footer{padding:2rem 0 3rem;text-align:center;font-size:.9rem;color:var(--texto-suave)}
+
+  /* ---------- Celular ---------- */
+  @media (max-width:760px){
+    .portada{grid-template-columns:1fr;min-height:auto;padding-top:1rem}
+    .sello-caja{grid-row:1}
+    .sello{width:180px}
+    .metodo,.sobre{grid-template-columns:1fr}
+    .proyectos{grid-template-columns:1fr}
+    .proyecto .ver{opacity:1}
+    .ficha{padding:1.75rem}
+    section{padding:3.5rem 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .sello .anillo,.sello.gira .anillo{animation:none}
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="contenedor">
+  <nav aria-label="Principal">
+    <a class="marca" href="#inicio">Tu Nombre</a>
+    <ul>
+      <li><a href="#metodo">Cómo trabajo</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="inicio">
+
+  <!-- ===================== PORTADA ===================== -->
+  <div class="contenedor portada">
+    <div>
+      <h1>Diseño objetos simples para la vida diaria.</h1>
+      <p>Soy Tu Nombre, diseñador/a con base en Santiago. Aquí puedes recorrer mis proyectos paso a paso: desde la primera pregunta hasta el prototipo final.</p>
+      <a class="boton" href="#metodo">Conoce mi proceso</a>
+    </div>
+
+    <!-- Sello: cambia "TN" y el texto del círculo por los tuyos. Al hacer clic, gira. -->
+    <div class="sello-caja">
+      <button class="sello" id="sello" aria-label="Girar el sello">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="circulo" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
+          <circle cx="100" cy="100" r="96" fill="none" stroke="var(--texto)" stroke-width="1.2"/>
+          <circle cx="100" cy="100" r="52" fill="none" stroke="var(--salvia)" stroke-width="1"/>
+          <g class="anillo">
+            <text font-family="Hanken Grotesk, sans-serif" font-size="11.5" letter-spacing="4.2" fill="var(--texto)">
+              <textPath href="#circulo">TU NOMBRE • PORTAFOLIO • DISEÑO • 2026 •</textPath>
+            </text>
+          </g>
+          <text x="100" y="113" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="300" font-size="38" fill="var(--texto)">TN</text>
+        </svg>
+      </button>
+      <span class="sello-nota">Toca el sello</span>
+    </div>
+  </div>
+
+  <!-- ===================== CÓMO TRABAJO ===================== -->
+  <section id="metodo">
+    <div class="contenedor">
+      <h2>Cómo trabajo</h2>
+      <p class="ayuda">Selecciona cada etapa para ver qué hago y qué herramientas uso.</p>
+      <div class="metodo">
+        <div class="pasos" role="tablist" aria-label="Etapas del proceso" id="pasos"></div>
+        <div class="panel" role="tabpanel" id="panel" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROYECTOS ===================== -->
+  <section id="proyectos">
+    <div class="contenedor">
+      <h2>Proyectos</h2>
+      <p class="ayuda">Filtra por tipo y abre un proyecto para ver su proceso completo.</p>
+      <div class="filtros" id="filtros" aria-label="Filtrar proyectos"></div>
+      <div class="proyectos" id="lista"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SOBRE MÍ ===================== -->
+  <section id="sobre-mi">
+    <div class="contenedor sobre">
+      <h2>Sobre mí</h2>
+      <div class="texto">
+        <p>Escribe aquí dos o tres frases sobre ti: qué estudias o a qué te dedicas, qué te interesa diseñar y cómo trabajas.</p>
+        <p>Puedes sumar tu formación, premios, exposiciones o experiencia laboral.</p>
+        <!-- Cambia el número de cada nivel (0 a 100) -->
+        <ul class="habilidades" id="habilidades"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACTO ===================== -->
+  <section id="contacto" class="contacto">
+    <div class="contenedor">
+      <h2>Conversemos</h2>
+      <p>Si te interesa mi trabajo o quieres colaborar, escríbeme. Toca el correo para copiarlo.</p>
+      <button class="correo" id="correo">tucorreo@ejemplo.com</button>
+      <span class="copiado" id="copiado" aria-live="polite"></span>
+      <ul class="redes">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Behance</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Descargar CV</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="contenedor">© 2026 Tu Nombre</footer>
+
+<!-- Ventana que se abre al elegir un proyecto -->
+<dialog id="ventana"><div class="ficha" id="ficha"></div></dialog>
+
+<script>
+/* =========================================================
+   CONTENIDO EDITABLE — cambia estos textos por los tuyos
+   ========================================================= */
+
+// Etapas de tu proceso de diseño
+const ETAPAS = [
+  { titulo:"Investigar", texto:"Observo cómo las personas usan los objetos en su contexto real y detecto qué les incomoda o falta.",
+    puntos:["Entrevistas y observación","Análisis de referentes","Mapa de usuario"] },
+  { titulo:"Idear", texto:"Transformo los hallazgos en muchas ideas rápidas, sin juzgarlas todavía, y luego elijo las más prometedoras.",
+    puntos:["Bocetos a mano","Matriz de evaluación","Moodboard de materiales"] },
+  { titulo:"Prototipar", texto:"Construyo modelos de baja y alta fidelidad para probar forma, tamaño y uso con las manos.",
+    puntos:["Maquetas en cartón","Modelado 3D","Impresión 3D y corte láser"] },
+  { titulo:"Validar", texto:"Pruebo los prototipos con usuarios, registro lo que funciona y ajusto el diseño antes de cerrarlo.",
+    puntos:["Pruebas de uso","Iteraciones","Planos y render final"] }
+];
+
+// Tus proyectos. "tipo" debe coincidir con uno de los FILTROS.
+const PROYECTOS = [
+  { titulo:"Nombre del proyecto destacado", resumen:"Una línea sobre qué problema resolviste.", tipo:"Objeto", anio:"2026", rol:"Diseño y prototipado",
+    forma:"circulo",
+    desafio:"Describe el problema o la pregunta inicial del proyecto. ¿Para quién era y qué necesitaba?",
+    proceso:["Investigación con usuarios","Bocetos y selección de idea","Prototipo impreso en 3D","Prueba y ajustes"],
+    resultado:"Cuenta qué lograste: cómo quedó el objeto final y qué aprendiste.",
+    materiales:["Madera de pino","PLA","Acero"] },
+  { titulo:"Segundo proyecto", resumen:"Ramo o cliente, año y tu rol.", tipo:"Mobiliario", anio:"2025", rol:"Proyecto de taller",
+    forma:"cuadrado",
+    desafio:"Describe el desafío de este proyecto.",
+    proceso:["Análisis de referentes","Maqueta a escala","Prototipo 1:1"],
+    resultado:"Resultado y aprendizajes.",
+    materiales:["Terciado","Tela"] },
+  { titulo:"Tercer proyecto", resumen:"Ramo o cliente, año y tu rol.", tipo:"Investigación", anio:"2025", rol:"Trabajo en equipo",
+    forma:"triangulo",
+    desafio:"Describe la pregunta de investigación.",
+    proceso:["Levantamiento de información","Entrevistas","Síntesis de hallazgos","Propuesta"],
+    resultado:"Conclusiones principales.",
+    materiales:["Informe","Infografías"] }
+];
+
+const FILTROS = ["Todos","Objeto","Mobiliario","Investigación"];
+
+// Habilidades con nivel de 0 a 100
+const HABILIDADES = [
+  { nombre:"Modelado 3D", detalle:"Rhino, Fusion 360", nivel:85 },
+  { nombre:"Prototipado", detalle:"Impresión 3D, láser", nivel:75 },
+  { nombre:"Bocetaje", detalle:"Mano alzada", nivel:80 },
+  { nombre:"Renderizado", detalle:"KeyShot", nivel:65 }
+];
+
+const CORREO = "tucorreo@ejemplo.com";
+
+/* =========================================================
+   FUNCIONAMIENTO — no necesitas editar debajo de esta línea
+   ========================================================= */
+const formas = {
+  circulo:'<circle cx="50" cy="50" r="40" fill="none" stroke="var(--musgo)" stroke-width="3"/>',
+  cuadrado:'<rect x="15" y="15" width="70" height="70" rx="6" fill="none" stroke="var(--musgo)" stroke-width="3"/>',
+  triangulo:'<path d="M50 12 L88 82 H12 Z" fill="none" stroke="var(--musgo)" stroke-width="3" stroke-linejoin="round"/>'
+};
+
+// Sello que gira al tocarlo
+const sello = document.getElementById("sello");
+sello.addEventListener("click", () => {
+  sello.classList.remove("gira"); void sello.offsetWidth; sello.classList.add("gira");
+});
+
+// Pestañas del proceso
+const pasos = document.getElementById("pasos");
+const panel = document.getElementById("panel");
+function mostrarEtapa(i){
+  [...pasos.children].forEach((b,j)=>{ b.setAttribute("aria-selected", i===j); b.tabIndex = i===j ? 0 : -1; });
+  const e = ETAPAS[i];
+  panel.innerHTML = `<h3>${e.titulo}</h3><p>${e.texto}</p>
+    <ul>${e.puntos.map(p=>`<li>${p}</li>`).join("")}</ul>
+    <div class="barra" aria-hidden="true"><div style="width:${(i+1)/ETAPAS.length*100}%"></div></div>`;
+}
+ETAPAS.forEach((e,i)=>{
+  const b = document.createElement("button");
+  b.className = "paso"; b.setAttribute("role","tab");
+  b.innerHTML = `<span>${i+1}</span>${e.titulo}`;
+  b.addEventListener("click", ()=>mostrarEtapa(i));
+  b.addEventListener("keydown", ev=>{
+    if(ev.key==="ArrowDown"||ev.key==="ArrowRight"){ const n=(i+1)%ETAPAS.length; mostrarEtapa(n); pasos.children[n].focus(); }
+    if(ev.key==="ArrowUp"||ev.key==="ArrowLeft"){ const n=(i-1+ETAPAS.length)%ETAPAS.length; mostrarEtapa(n); pasos.children[n].focus(); }
+  });
+  pasos.appendChild(b);
+});
+mostrarEtapa(0);
+
+// Proyectos
+const lista = document.getElementById("lista");
+PROYECTOS.forEach((p,i)=>{
+  const b = document.createElement("button");
+  b.className = "proyecto"; b.dataset.tipo = p.tipo;
+  b.innerHTML = `<div class="imagen"><svg viewBox="0 0 100 100" aria-hidden="true">${formas[p.forma]}</svg><span class="ver">Ver proceso</span></div>
+    <h3>${p.titulo}</h3><p>${p.resumen}</p><span class="etiqueta">${p.tipo}</span>`;
+  b.addEventListener("click", ()=>abrir(i));
+  lista.appendChild(b);
+});
+
+// Filtros
+const filtros = document.getElementById("filtros");
+FILTROS.forEach(f=>{
+  const b = document.createElement("button");
+  b.className = "filtro"; b.textContent = f; b.setAttribute("aria-pressed", f==="Todos");
+  b.addEventListener("click", ()=>{
+    [...filtros.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
+    [...lista.children].forEach(c=>{ c.hidden = !(f==="Todos" || c.dataset.tipo===f); });
+  });
+  filtros.appendChild(b);
+});
+
+// Ventana de detalle
+const ventana = document.getElementById("ventana");
+const ficha = document.getElementById("ficha");
+function abrir(i){
+  const p = PROYECTOS[i];
+  ficha.innerHTML = `<button class="cerrar" id="cerrar">Cerrar</button>
+    <h3>${p.titulo}</h3>
+    <p class="meta">${p.tipo}, ${p.anio}. ${p.rol}.</p>
+    <h4>El desafío</h4><p>${p.desafio}</p>
+    <h4>El proceso</h4>
+    <ol class="linea">${p.proceso.map((s,k)=>`<li><span class="num">${k+1}</span><strong>${s}</strong></li>`).join("")}</ol>
+    <h4>El resultado</h4><p>${p.resultado}</p>
+    <h4>Materiales</h4><ul class="materiales">${p.materiales.map(m=>`<li>${m}</li>`).join("")}</ul>`;
+  document.getElementById("cerrar").addEventListener("click", ()=>ventana.close());
+  ventana.showModal();
+}
+ventana.addEventListener("click", e=>{ if(e.target===ventana) ventana.close(); });
+
+// Habilidades
+document.getElementById("habilidades").innerHTML = HABILIDADES.map(h=>`
+  <li><div class="fila"><span>${h.nombre}</span><em>${h.detalle}</em></div>
+  <div class="nivel" role="img" aria-label="${h.nombre}: ${h.nivel} de 100"><div style="width:${h.nivel}%"></div></div></li>`).join("");
+
+// Copiar correo
+const correo = document.getElementById("correo");
+const copiado = document.getElementById("copiado");
+correo.textContent = CORREO;
+correo.addEventListener("click", async ()=>{
+  try{ await navigator.clipboard.writeText(CORREO); copiado.textContent = "Correo copiado"; }
+  catch{ window.location.href = "mailto:"+CORREO; }
+  setTimeout(()=>copiado.textContent="", 2500);
+});
+</script>
+</body>
+</html>
