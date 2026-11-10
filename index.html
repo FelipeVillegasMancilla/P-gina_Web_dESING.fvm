@@ -39,15 +39,16 @@
   .nombre{text-align:center;text-transform:uppercase;color:var(--texto-suave);font-weight:300;margin:76px 0 0;padding:0 16px}
   .nombre h1,.nombre p{font:inherit;margin:0}
 
-  /* ---------- Trabajos: grilla de borde a borde ---------- */
-  .trabajos{display:grid;grid-template-columns:repeat(3,1fr);margin-top:166px}
-  .trabajo{position:relative;aspect-ratio:480/450;overflow:hidden;background:var(--casilla);text-align:left;display:block;width:100%}
+  /* ---------- Trabajos: grilla de borde a borde, un cuadrante por área ---------- */
+  .trabajos{display:grid;grid-template-columns:repeat(4,1fr);margin-top:166px}
+  .trabajo{position:relative;aspect-ratio:360/450;overflow:hidden;background:var(--casilla);text-align:left;display:block;width:100%}
   .trabajo img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
   .trabajo .rotulo{position:absolute;inset:auto 0 0 0;padding:20px 24px;background:linear-gradient(transparent,rgba(20,20,20,.85));text-transform:uppercase;font-size:14px;opacity:0;transition:opacity .25s}
   .trabajo .rotulo span{display:block;color:var(--texto-suave);font-weight:300}
   .trabajo:hover img{transform:scale(1.03)}
   .trabajo:hover .rotulo,.trabajo:focus-visible .rotulo{opacity:1}
-  .trabajo.vacio{display:grid;place-items:center;color:var(--texto-suave);font-weight:300;text-transform:uppercase;font-size:14px;box-shadow:inset 0 0 0 1px var(--linea)}
+  .trabajo .area{position:absolute;top:24px;left:24px;right:24px;text-transform:uppercase;font-size:14px;color:var(--texto);text-shadow:0 1px 8px rgba(0,0,0,.6)}
+  .trabajo.vacio{display:block;color:var(--texto-suave);font-weight:300;text-transform:uppercase;font-size:14px;box-shadow:inset 0 0 0 1px var(--linea)}
 
   /* ---------- Sobre mí y contacto ---------- */
   .bloque{max-width:720px;margin:0 auto;padding:160px 24px 0}
@@ -85,7 +86,7 @@
     .bloque{padding-top:96px}
     .ficha{padding:24px}
   }
-  @media (min-width:761px) and (max-width:1100px){
+  @media (min-width:761px) and (max-width:900px){
     .trabajos{grid-template-columns:repeat(2,1fr)}
   }
   @media (prefers-reduced-motion:reduce){
@@ -139,19 +140,18 @@
 <script>
 /* =========================================================
    CONTENIDO EDITABLE
-   Cada trabajo es una casilla de la grilla. "imagen" es la ruta
+   Cada cuadrante es un área. "area" es el título que se ve arriba,
+   "titulo" es el trabajo que se muestra dentro. "imagen" es la ruta
    de la foto dentro de la carpeta img/ (déjalo vacío si aún no hay).
    ========================================================= */
 const TRABAJOS = [
-  { titulo:"Trabajo 1", tipo:"Fabricación digital", anio:"2026", imagen:"img/trabajo-1.png",
+  { area:"Oficio", titulo:"", imagen:"" },
+  { area:"Escala", titulo:"", imagen:"" },
+  { area:"Conceptualización", titulo:"", imagen:"" },
+  { area:"Fab digital", titulo:"Trabajo 1", tipo:"Fabricación digital", anio:"2026", imagen:"img/trabajo-1.png",
     desafio:"PENDIENTE: ¿qué problema o pregunta había detrás de esta pieza?",
     proceso:["PENDIENTE: paso 1","PENDIENTE: paso 2","PENDIENTE: paso 3"],
-    resultado:"PENDIENTE: cómo quedó y qué aprendiste." },
-  { titulo:"De la mano a la máquina", tipo:"Gestión editorial", anio:"2026", imagen:"",
-    desafio:"Reunir el trabajo de la escuela en un libro impreso, coordinando a estudiantes, diseño editorial e imprenta.",
-    proceso:["Definición de contenidos","Coordinación con STOQ Editorial","Evaluación de imprenta (300 y 500 ejemplares)","Ajuste de costos y materialidad"],
-    resultado:"PENDIENTE: cuenta cómo quedó el libro y qué aprendiste del proceso." },
-  { titulo:"Próximo trabajo", tipo:"", anio:"", imagen:"" }
+    resultado:"PENDIENTE: cómo quedó y qué aprendiste." }
 ];
 
 const CORREO = "pipevillegasm@gmail.com";
@@ -164,12 +164,12 @@ TRABAJOS.forEach((t,i)=>{
   const b = document.createElement("button");
   if(t.imagen){
     b.className = "trabajo";
-    b.innerHTML = `<img src="${t.imagen}" alt="${t.titulo}" loading="lazy">
+    b.innerHTML = `<img src="${t.imagen}" alt="${t.titulo || t.area}" loading="lazy">
       <div class="rotulo">${t.titulo}<span>${[t.tipo,t.anio].filter(Boolean).join(" · ")}</span></div>`;
   } else {
     b.className = "trabajo vacio";
-    b.innerHTML = `<span>${t.titulo}</span>`;
   }
+  b.insertAdjacentHTML("beforeend", `<span class="area">${t.area}</span>`);
   if(t.desafio) b.addEventListener("click", ()=>abrir(i)); else b.disabled = true;
   lista.appendChild(b);
 });
@@ -180,7 +180,7 @@ function abrir(i){
   const t = TRABAJOS[i];
   ficha.innerHTML = `<button class="cerrar" id="cerrar">Cerrar</button>
     <h3>${t.titulo}</h3>
-    <p class="meta">${[t.tipo,t.anio].filter(Boolean).join(" · ")}</p>
+    <p class="meta">${[t.area,t.tipo,t.anio].filter(Boolean).join(" · ")}</p>
     ${t.imagen ? `<img src="${t.imagen}" alt="">` : ""}
     <h4>Desafío</h4><p>${t.desafio}</p>
     <h4>Proceso</h4><ol>${t.proceso.map(s=>`<li>${s}</li>`).join("")}</ol>
