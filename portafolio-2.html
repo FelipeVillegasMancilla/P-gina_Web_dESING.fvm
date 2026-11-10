@@ -75,19 +75,15 @@
   footer{padding:100px 16px 47px;text-align:center;font-size:10px}
   footer .marca{font-family:var(--sans)}
 
-  /* ---------- Ventana de trabajo ---------- */
-  dialog{border:1px solid var(--texto-suave);padding:0;width:min(760px,100% - 32px);max-height:88vh;background:var(--fondo);color:var(--texto);font-family:var(--mono)}
-  dialog::backdrop{background:rgba(0,0,0,.7)}
-  .ficha{padding:40px}
-  .ficha img{margin:0 0 32px;width:100%}
-  .cerrar{float:right;text-transform:uppercase;font-size:14px;color:var(--texto-suave)}
-  .cerrar:hover{color:var(--texto)}
-  .ficha h3{font-size:20px;font-weight:500;text-transform:uppercase;margin:0 0 4px}
-  .ficha .meta{color:var(--texto-suave);font-weight:300;margin:0 0 32px;text-transform:uppercase;font-size:14px}
-  .ficha h4{font-size:14px;font-weight:400;text-transform:uppercase;margin:32px 0 8px}
-  .ficha p,.ficha li{color:var(--texto-suave);font-weight:300}
-  .ficha p{margin:0}
-  .ficha ol{margin:0;padding-left:24px}
+  /* ---------- Pop up de un área: tapa la grilla y lista sus trabajos ---------- */
+  .areas{position:relative}
+  .panel{position:absolute;top:-53px;bottom:-49px;left:10px;right:10px;z-index:2;background:#393939;display:grid;place-items:center;padding:48px 24px}
+  .panel[hidden]{display:none}
+  .panel ul{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:32px 24px;justify-items:center}
+  .panel li{display:flex;align-items:center;gap:20px;text-transform:uppercase}
+  .panel li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--texto)}
+  .panel .cerrar{position:absolute;top:20px;right:24px;font-size:13px;text-transform:uppercase;color:var(--texto-suave)}
+  .panel .cerrar:hover{color:var(--texto)}
 
   /* ---------- Pantallas medianas y celular ---------- */
   @media (max-width:1300px){
@@ -96,6 +92,7 @@
   @media (max-width:900px){
     .barra{padding:32px 24px 0;font-size:17px}
     .areas{grid-template-columns:repeat(2,1fr)}
+    .panel ul{grid-template-columns:1fr;justify-items:start;width:auto}
     .area span{font-size:28px}
     .otros{padding:120px 16px 0}
     .redes{gap:12px 64px}
@@ -112,7 +109,7 @@
     .contacto{padding-top:96px}
     .redes{gap:12px 32px;font-size:12px}
     footer{padding:48px 16px}
-    .ficha{padding:24px}
+    .panel{top:-16px;bottom:-16px;left:0;right:0}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -137,7 +134,12 @@
 
 <main>
   <section id="trabajos" aria-label="Áreas de trabajo">
-    <div class="areas" id="lista"></div>
+    <div class="areas" id="lista">
+      <div class="panel" id="panel" role="dialog" aria-modal="false" hidden>
+        <button class="cerrar" id="cerrar">Cerrar</button>
+        <ul id="panel-lista"></ul>
+      </div>
+    </div>
     <p class="bajada">Portafolio consiste en mostrar la forma en que se complementa la idea junto con el oficio, y de cómo se puede complementar lo análogo con lo digital para fabricar distintos objetos y piezas.</p>
   </section>
 
@@ -160,17 +162,16 @@
 
 <footer>@<span class="marca">dESIGN.FVM</span></footer>
 
-<dialog id="ventana"><div class="ficha" id="ficha"></div></dialog>
-
 <script>
 /* =========================================================
    CONTENIDO EDITABLE
    Cada área es una foto con su título al centro. "imagen" es la ruta
-   de la foto dentro de la carpeta img/. Si le agregas "titulo",
-   "desafio", "proceso" y "resultado", al hacer clic se abre su ficha.
+   de la foto dentro de la carpeta img/. Si le agregas "trabajos",
+   al hacer clic se abre un pop up con esa lista.
    ========================================================= */
 const AREAS = [
-  { area:"Oficio", imagen:"img/area-oficio.jpg" },
+  { area:"Oficio", imagen:"img/area-oficio.jpg",
+    trabajos:["Uniones japonesas","Corte en sheet metal","Silla LCW"] },
   { area:"Fab digital", imagen:"img/area-fab-digital.jpg" },
   { area:"Idea", imagen:"img/area-conceptualizacion.jpg" },
   { area:"Escala", imagen:"img/area-escala.jpg" }
@@ -189,33 +190,36 @@ const CORREO = "pipevillegasm@gmail.com";
    FUNCIONAMIENTO — no necesitas editar debajo de esta línea
    ========================================================= */
 const lista = document.getElementById("lista");
-AREAS.forEach((t,i)=>{
+const panel = document.getElementById("panel");
+const panelLista = document.getElementById("panel-lista");
+let abierta = null;
+AREAS.forEach(t=>{
   const b = document.createElement("button");
   b.className = "area";
   b.innerHTML = `<img src="${t.imagen}" alt="" loading="lazy"><span>${t.area}</span>`;
-  if(t.desafio) b.addEventListener("click", ()=>abrir(i)); else b.disabled = true;
-  lista.appendChild(b);
+  if(t.trabajos) b.addEventListener("click", ()=>abrir(t, b)); else b.disabled = true;
+  lista.insertBefore(b, panel);
 });
+
+function abrir(t, boton){
+  panelLista.innerHTML = t.trabajos.map(x=>`<li>${x}</li>`).join("");
+  panel.setAttribute("aria-label", t.area);
+  panel.hidden = false;
+  abierta = boton;
+  document.getElementById("cerrar").focus();
+}
+function cerrar(){
+  if(panel.hidden) return;
+  panel.hidden = true;
+  abierta?.focus();
+}
+document.getElementById("cerrar").addEventListener("click", cerrar);
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") cerrar(); });
+document.addEventListener("click", e=>{ if(!panel.hidden && !panel.contains(e.target) && !e.target.closest(".area")) cerrar(); });
 
 document.getElementById("otros").innerHTML = OTROS.map(o=>
   `<details class="fila"><summary>${o.titulo}</summary><div class="contenido"><p>${o.texto}</p></div></details>`
 ).join("");
-
-const ventana = document.getElementById("ventana");
-const ficha = document.getElementById("ficha");
-function abrir(i){
-  const t = AREAS[i];
-  ficha.innerHTML = `<button class="cerrar" id="cerrar">Cerrar</button>
-    <h3>${t.titulo || t.area}</h3>
-    <p class="meta">${[t.area,t.tipo,t.anio].filter(Boolean).join(" · ")}</p>
-    ${t.imagen ? `<img src="${t.imagen}" alt="">` : ""}
-    <h4>Desafío</h4><p>${t.desafio}</p>
-    <h4>Proceso</h4><ol>${(t.proceso||[]).map(s=>`<li>${s}</li>`).join("")}</ol>
-    <h4>Resultado</h4><p>${t.resultado || ""}</p>`;
-  document.getElementById("cerrar").addEventListener("click", ()=>ventana.close());
-  ventana.showModal();
-}
-ventana.addEventListener("click", e=>{ if(e.target===ventana) ventana.close(); });
 
 const correo = document.getElementById("correo");
 const copiado = document.getElementById("copiado");
