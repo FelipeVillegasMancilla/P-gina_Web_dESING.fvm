@@ -3,23 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Felipe Villegas — Portafolio</title>
-<meta name="description" content="Portafolio de Felipe Villegas Mancilla, estudiante de Ingeniería en Diseño e Ingeniería Comercial.">
+<title>dESIGN.FVM — Felipe Villegas</title>
+<meta name="description" content="Portafolio personal de Felipe Villegas Mancilla, estudiante de Ingeniería en Diseño e Ingeniería Comercial.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   /* =========================================================
      COLORES Y MEDIDAS — cambia aquí y se actualiza todo el sitio
-     (sacados del template de InDesign: 1440 px de ancho)
+     (sacados del template de InDesign Página_Portafolio: 1440 px de ancho)
      ========================================================= */
   :root{
     --fondo:#292929;        /* fondo de la página */
-    --texto:#FFFFFF;        /* menú y títulos */
-    --texto-suave:#A6A6A6;  /* nombre, subtítulo y textos */
-    --linea:#3A3A3A;        /* bordes y casillas vacías */
-    --casilla:#303030;      /* fondo de trabajos sin imagen */
+    --barra:#404040;        /* barra superior con dESIGN.FVM */
+    --casilla:#393939;      /* fondo de los cuadrantes */
+    --borde:#F1F0DF;        /* borde de los cuadrantes */
+    --texto:#FFFFFF;        /* textos principales */
+    --texto-suave:#BDBDBD;  /* títulos de cuadrantes y bajada */
     --mono:"Source Code Pro", ui-monospace, "Cascadia Mono", Consolas, monospace;
+    --sans:"Inter", "Acumin Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
 
   *,*::before,*::after{box-sizing:border-box}
@@ -28,43 +30,54 @@
   img{max-width:100%;display:block}
   a{color:inherit;text-decoration:none}
   button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
-  a:focus-visible,button:focus-visible{outline:1px solid var(--texto);outline-offset:4px}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:1px solid var(--texto);outline-offset:4px}
 
-  /* ---------- Menú: tres columnas iguales ---------- */
-  .menu{display:grid;grid-template-columns:repeat(3,1fr);padding-top:127px;text-align:center;text-transform:uppercase;font-weight:400}
-  .menu a{justify-self:center;padding:4px 0;border-bottom:1px solid transparent;transition:border-color .2s}
-  .menu a:hover{border-color:var(--texto)}
+  /* ---------- Barra superior ---------- */
+  .barra{height:58px;display:grid;place-items:center;background:var(--barra)}
+  .marca{font-family:var(--sans);font-size:20px;font-weight:400;letter-spacing:.01em}
 
-  /* ---------- Nombre ---------- */
-  .nombre{text-align:center;text-transform:uppercase;color:var(--texto-suave);font-weight:300;margin:76px 0 0;padding:0 16px}
+  /* ---------- Portada con foto ---------- */
+  .portada{position:relative;aspect-ratio:1440/307;overflow:hidden;background:#9e9e9d}
+  .portada img{width:100%;height:100%;object-fit:cover;object-position:60% 50%;filter:brightness(.68)}
+  .nombre{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:#000;text-transform:uppercase;font-weight:400}
   .nombre h1,.nombre p{font:inherit;margin:0}
 
-  /* ---------- Trabajos: grilla de borde a borde, un cuadrante por área ---------- */
-  .trabajos{display:grid;grid-template-columns:repeat(4,1fr);margin-top:166px}
-  .trabajo{position:relative;aspect-ratio:360/450;overflow:hidden;background:var(--casilla);text-align:left;display:block;width:100%}
+  /* ---------- Cuadrantes ---------- */
+  .trabajos{display:grid;grid-template-columns:repeat(4,1fr)}
+  .trabajo{position:relative;height:450px;overflow:hidden;background:var(--casilla);box-shadow:inset 0 0 0 1px var(--borde);text-align:left;display:block;width:100%}
+  .trabajo:disabled{cursor:default}
   .trabajo img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
-  .trabajo .rotulo{position:absolute;inset:auto 0 0 0;padding:20px 24px;background:linear-gradient(transparent,rgba(20,20,20,.85));text-transform:uppercase;font-size:14px;opacity:0;transition:opacity .25s}
+  .trabajo .area{position:absolute;top:26px;left:20px;right:20px;text-transform:uppercase;color:var(--texto-suave);font-weight:400}
+  .trabajo.con-foto .area{color:var(--texto);text-shadow:0 1px 8px rgba(0,0,0,.6)}
+  .trabajo .rotulo{position:absolute;inset:auto 0 0 0;padding:20px;background:linear-gradient(transparent,rgba(20,20,20,.85));text-transform:uppercase;font-size:14px;opacity:0;transition:opacity .25s}
   .trabajo .rotulo span{display:block;color:var(--texto-suave);font-weight:300}
-  .trabajo:hover img{transform:scale(1.03)}
+  .trabajo:not(:disabled):hover img{transform:scale(1.03)}
   .trabajo:hover .rotulo,.trabajo:focus-visible .rotulo{opacity:1}
-  .trabajo .area{position:absolute;top:24px;left:24px;right:24px;text-transform:uppercase;font-size:14px;color:var(--texto);text-shadow:0 1px 8px rgba(0,0,0,.6)}
-  .trabajo.vacio{display:block;color:var(--texto-suave);font-weight:300;text-transform:uppercase;font-size:14px;box-shadow:inset 0 0 0 1px var(--linea)}
 
-  /* ---------- Sobre mí y contacto ---------- */
-  .bloque{max-width:720px;margin:0 auto;padding:160px 24px 0}
-  .bloque h2{font-size:16px;font-weight:400;text-transform:uppercase;margin:0 0 32px;text-align:center}
-  .bloque p{color:var(--texto-suave);font-weight:300;margin:0 0 20px}
-  .contacto{text-align:center}
-  .correo{color:var(--texto);border-bottom:1px solid var(--linea);font-size:18px}
-  .correo:hover{border-color:var(--texto)}
-  .copiado{display:block;min-height:24px;margin-top:12px;font-size:14px;color:var(--texto-suave)}
-  .redes{display:flex;justify-content:center;flex-wrap:wrap;gap:32px;list-style:none;padding:0;margin:32px 0 0;text-transform:uppercase;font-size:14px}
-  .redes a{color:var(--texto-suave)}
-  .redes a:hover{color:var(--texto)}
-  footer{padding:160px 24px 48px;text-align:center;font-size:13px;font-weight:300;color:var(--texto-suave);text-transform:uppercase}
+  .bajada{margin:68px 0 0;text-align:center;text-transform:uppercase;color:var(--texto-suave);padding:0 16px}
+
+  /* ---------- Otros: filas desplegables ---------- */
+  .otros{padding:204px 30px 0}
+  .otros h2{font:inherit;text-align:center;margin:0 0 20px}
+  .fila{border:1px solid var(--texto);margin-bottom:46px}
+  .fila summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:53px;padding:0 33px 0 15px;text-transform:uppercase;cursor:pointer}
+  .fila summary::-webkit-details-marker{display:none}
+  .fila summary::after{content:"";width:1px;height:29px;background:var(--texto);transition:transform .25s}
+  .fila[open] summary::after{transform:rotate(90deg)}
+  .fila .contenido{padding:0 15px 20px;color:var(--texto-suave);font-weight:300}
+  .fila .contenido p{margin:0}
+
+  /* ---------- Contacto ---------- */
+  .contacto{padding:165px 16px 0;text-align:center}
+  .correo{font-size:20px}
+  .correo:hover{text-decoration:underline;text-underline-offset:6px}
+  .copiado{display:block;min-height:24px;margin-top:4px;font-size:14px;color:var(--texto-suave)}
+  .redes{display:flex;justify-content:center;flex-wrap:wrap;gap:16px 120px;list-style:none;padding:0;margin:22px 0 0}
+  .redes a:hover{text-decoration:underline;text-underline-offset:6px}
+  footer{padding:77px 16px 32px}
 
   /* ---------- Ventana de trabajo ---------- */
-  dialog{border:1px solid var(--linea);padding:0;width:min(760px,100% - 32px);max-height:88vh;background:var(--fondo);color:var(--texto);font-family:var(--mono)}
+  dialog{border:1px solid var(--borde);padding:0;width:min(760px,100% - 32px);max-height:88vh;background:var(--fondo);color:var(--texto);font-family:var(--mono)}
   dialog::backdrop{background:rgba(0,0,0,.7)}
   .ficha{padding:40px}
   .ficha img{margin:0 0 32px;width:100%}
@@ -77,17 +90,27 @@
   .ficha p{margin:0}
   .ficha ol{margin:0;padding-left:24px}
 
-  /* ---------- Celular ---------- */
-  @media (max-width:760px){
-    .menu{padding-top:48px;font-size:14px}
-    .nombre{margin-top:48px;font-size:14px}
-    .trabajos{grid-template-columns:1fr;margin-top:80px}
-    .trabajo .rotulo{opacity:1}
-    .bloque{padding-top:96px}
-    .ficha{padding:24px}
-  }
-  @media (min-width:761px) and (max-width:900px){
+  /* ---------- Pantallas medianas y celular ---------- */
+  @media (max-width:900px){
     .trabajos{grid-template-columns:repeat(2,1fr)}
+    .trabajo{height:360px}
+    .otros{padding:120px 16px 0}
+    .redes{gap:16px 64px}
+  }
+  @media (max-width:760px){
+    .portada{aspect-ratio:auto;height:220px}
+    .nombre{font-size:13px;left:16px}
+    .trabajos{grid-template-columns:1fr}
+    .trabajo{height:300px}
+    .trabajo .rotulo{opacity:1}
+    .bajada{font-size:14px}
+    .otros{padding-top:96px}
+    .fila{margin-bottom:24px}
+    .fila summary{font-size:14px;padding-right:20px;gap:16px}
+    .contacto{padding-top:96px}
+    .correo{font-size:17px}
+    .redes{gap:16px 32px}
+    .ficha{padding:24px}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -98,42 +121,39 @@
 <body>
 
 <header>
-  <nav class="menu" aria-label="Principal">
-    <a href="#sobre-mi">Sobre mí</a>
-    <a href="#trabajos">Trabajos</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
-  <div class="nombre">
-    <h1>Felipe Villegas</h1>
-    <p>Estudiante Ing Diseño – Ing Comercial</p>
+  <div class="barra"><a class="marca" href="#">dESIGN.FVM</a></div>
+  <div class="portada">
+    <img src="img/portada-silla.jpg" alt="Silla roja de madera curvada">
+    <div class="nombre">
+      <h1>Felipe Villegas</h1>
+      <p>Estudiante Ing Diseño – Ing Comercial</p>
+    </div>
   </div>
 </header>
 
 <main>
   <section id="trabajos" aria-label="Trabajos">
     <div class="trabajos" id="lista"></div>
+    <p class="bajada">Portafolio personal de Ingeniería en Diseño/Industrial</p>
   </section>
 
-  <section id="sobre-mi" class="bloque">
-    <h2>Sobre mí</h2>
-    <p>Estudio Ingeniería en Diseño e Ingeniería Comercial. Combino la mirada de quien idea, itera y diseña con la de quien gestiona y analiza.</p>
-    <p>Siempre he trabajado en terreno, resolviendo sobre la marcha: vendí fierros, fui junior en construcción y cajero en un kiosco del aeropuerto. En la universidad fui ayudante de Fabricación digital y de Taller de diseño de interfaces, trabajé en el portafolio de la escuela con el centro de alumnos y tuve un rol de gestión en un emprendimiento universitario.</p>
-    <p>Fuera de eso compito en enduro y recorrí Chile en moto, de Atacama a Aysén.</p>
+  <section class="otros" aria-labelledby="otros-titulo">
+    <h2 id="otros-titulo">Otros</h2>
+    <div id="otros"></div>
   </section>
 
-  <section id="contacto" class="bloque contacto">
-    <h2>Contacto</h2>
+  <section id="contacto" class="contacto" aria-label="Contacto">
     <button class="correo" id="correo"></button>
     <span class="copiado" id="copiado" aria-live="polite"></span>
     <ul class="redes">
-      <li><a href="#">LinkedIn</a></li>
       <li><a href="#">Instagram</a></li>
       <li><a href="#">CV</a></li>
+      <li><a href="#">Linkedin</a></li>
     </ul>
   </section>
 </main>
 
-<footer>© 2026 Felipe Villegas Mancilla</footer>
+<footer></footer>
 
 <dialog id="ventana"><div class="ficha" id="ficha"></div></dialog>
 
@@ -146,12 +166,19 @@
    ========================================================= */
 const TRABAJOS = [
   { area:"Oficio", titulo:"", imagen:"" },
-  { area:"Escala", titulo:"", imagen:"" },
-  { area:"Conceptualización", titulo:"", imagen:"" },
   { area:"Fab digital", titulo:"Trabajo 1", tipo:"Fabricación digital", anio:"2026", imagen:"img/trabajo-1.png",
     desafio:"PENDIENTE: ¿qué problema o pregunta había detrás de esta pieza?",
     proceso:["PENDIENTE: paso 1","PENDIENTE: paso 2","PENDIENTE: paso 3"],
-    resultado:"PENDIENTE: cómo quedó y qué aprendiste." }
+    resultado:"PENDIENTE: cómo quedó y qué aprendiste." },
+  { area:"Conceptualización", titulo:"", imagen:"" },
+  { area:"Escala", titulo:"", imagen:"" }
+];
+
+/* Filas de "Otros": cada una se despliega al hacer clic. */
+const OTROS = [
+  { titulo:"Registro de video de proceso de fabricación", texto:"PENDIENTE: videos del proceso." },
+  { titulo:"Fotografía", texto:"PENDIENTE: fotografías." },
+  { titulo:"Manufactura personal", texto:"PENDIENTE: piezas hechas a mano." }
 ];
 
 const CORREO = "pipevillegasm@gmail.com";
@@ -162,17 +189,20 @@ const CORREO = "pipevillegasm@gmail.com";
 const lista = document.getElementById("lista");
 TRABAJOS.forEach((t,i)=>{
   const b = document.createElement("button");
+  b.className = "trabajo";
   if(t.imagen){
-    b.className = "trabajo";
+    b.classList.add("con-foto");
     b.innerHTML = `<img src="${t.imagen}" alt="${t.titulo || t.area}" loading="lazy">
       <div class="rotulo">${t.titulo}<span>${[t.tipo,t.anio].filter(Boolean).join(" · ")}</span></div>`;
-  } else {
-    b.className = "trabajo vacio";
   }
   b.insertAdjacentHTML("beforeend", `<span class="area">${t.area}</span>`);
   if(t.desafio) b.addEventListener("click", ()=>abrir(i)); else b.disabled = true;
   lista.appendChild(b);
 });
+
+document.getElementById("otros").innerHTML = OTROS.map(o=>
+  `<details class="fila"><summary>${o.titulo}</summary><div class="contenido"><p>${o.texto}</p></div></details>`
+).join("");
 
 const ventana = document.getElementById("ventana");
 const ficha = document.getElementById("ficha");
