@@ -45,10 +45,9 @@
   /* ---------- Áreas: cuatro fotos con su título al centro ---------- */
   .areas{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 10px;margin-top:118px}
   .area{position:relative;aspect-ratio:347/451;overflow:hidden;background:var(--casilla);display:block;width:100%}
-  .area img{width:100%;height:100%;object-fit:cover;filter:brightness(.7);transition:filter .3s,transform .6s ease}
-  .area span{position:absolute;inset:0;display:grid;place-items:center;padding:0 12px;font-family:var(--sans);font-size:30px;letter-spacing:.16em;text-transform:uppercase;text-align:center;text-shadow:0 1px 12px rgba(0,0,0,.5)}
-  .area:not(:disabled):hover img{filter:brightness(.85);transform:scale(1.03)}
-  .area:disabled{cursor:default}
+  .area img{width:100%;height:100%;object-fit:cover;filter:brightness(.7)}
+  .area span{position:absolute;inset:0;display:grid;place-items:center;padding:0 12px;font-family:var(--sans);font-size:30px;letter-spacing:.16em;text-transform:uppercase;text-align:center;text-shadow:0 1px 12px rgba(0,0,0,.5);transition:color .2s,text-shadow .2s}
+  a.area:hover span,a.area:focus-visible span{color:#000;text-shadow:none}
 
   .bajada{max-width:912px;margin:104px auto 0;text-align:center;text-transform:uppercase;color:var(--texto-suave);padding:0 16px}
 
@@ -75,16 +74,6 @@
   footer{padding:100px 16px 47px;text-align:center;font-size:10px}
   footer .marca{font-family:var(--sans)}
 
-  /* ---------- Pop up de un área: tapa la grilla y lista sus trabajos ---------- */
-  .areas{position:relative}
-  .panel{position:absolute;top:-53px;bottom:-49px;left:10px;right:10px;z-index:2;background:#393939;display:grid;place-items:center;padding:48px 24px}
-  .panel[hidden]{display:none}
-  .panel ul{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:32px 24px;justify-items:center}
-  .panel li{display:flex;align-items:center;gap:20px;text-transform:uppercase}
-  .panel li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--texto)}
-  .panel .cerrar{position:absolute;top:20px;right:24px;font-size:13px;text-transform:uppercase;color:var(--texto-suave)}
-  .panel .cerrar:hover{color:var(--texto)}
-
   /* ---------- Pantallas medianas y celular ---------- */
   @media (max-width:1300px){
     .area span{font-size:24px;letter-spacing:.12em}
@@ -92,7 +81,6 @@
   @media (max-width:900px){
     .barra{padding:32px 24px 0;font-size:17px}
     .areas{grid-template-columns:repeat(2,1fr)}
-    .panel ul{grid-template-columns:1fr;justify-items:start;width:auto}
     .area span{font-size:28px}
     .otros{padding:120px 16px 0}
     .redes{gap:12px 64px}
@@ -109,7 +97,6 @@
     .contacto{padding-top:96px}
     .redes{gap:12px 32px;font-size:12px}
     footer{padding:48px 16px}
-    .panel{top:-16px;bottom:-16px;left:0;right:0}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -134,12 +121,7 @@
 
 <main>
   <section id="trabajos" aria-label="Áreas de trabajo">
-    <div class="areas" id="lista">
-      <div class="panel" id="panel" role="dialog" aria-modal="false" hidden>
-        <button class="cerrar" id="cerrar">Cerrar</button>
-        <ul id="panel-lista"></ul>
-      </div>
-    </div>
+    <div class="areas" id="lista"></div>
     <p class="bajada">Portafolio consiste en mostrar la forma en que se complementa la idea junto con el oficio, y de cómo se puede complementar lo análogo con lo digital para fabricar distintos objetos y piezas.</p>
   </section>
 
@@ -166,12 +148,12 @@
 /* =========================================================
    CONTENIDO EDITABLE
    Cada área es una foto con su título al centro. "imagen" es la ruta
-   de la foto dentro de la carpeta img/. Si le agregas "trabajos",
-   al hacer clic se abre un pop up con esa lista.
+   de la foto dentro de la carpeta img/. Si le agregas "pagina",
+   al hacer clic lleva a esa página con los trabajos del área.
    ========================================================= */
 const AREAS = [
   { area:"Oficio", imagen:"img/area-oficio.jpg",
-    trabajos:["Uniones japonesas","Corte en sheet metal","Silla LCW"] },
+    pagina:"oficio.html" },
   { area:"Fab digital", imagen:"img/area-fab-digital.jpg" },
   { area:"Idea", imagen:"img/area-conceptualizacion.jpg" },
   { area:"Escala", imagen:"img/area-escala.jpg" }
@@ -190,32 +172,13 @@ const CORREO = "pipevillegasm@gmail.com";
    FUNCIONAMIENTO — no necesitas editar debajo de esta línea
    ========================================================= */
 const lista = document.getElementById("lista");
-const panel = document.getElementById("panel");
-const panelLista = document.getElementById("panel-lista");
-let abierta = null;
 AREAS.forEach(t=>{
-  const b = document.createElement("button");
-  b.className = "area";
-  b.innerHTML = `<img src="${t.imagen}" alt="" loading="lazy"><span>${t.area}</span>`;
-  if(t.trabajos) b.addEventListener("click", ()=>abrir(t, b)); else b.disabled = true;
-  lista.insertBefore(b, panel);
+  const el = document.createElement(t.pagina ? "a" : "div");
+  el.className = "area";
+  if(t.pagina) el.href = t.pagina;
+  el.innerHTML = `<img src="${t.imagen}" alt="" loading="lazy"><span>${t.area}</span>`;
+  lista.appendChild(el);
 });
-
-function abrir(t, boton){
-  panelLista.innerHTML = t.trabajos.map(x=>`<li>${x}</li>`).join("");
-  panel.setAttribute("aria-label", t.area);
-  panel.hidden = false;
-  abierta = boton;
-  document.getElementById("cerrar").focus();
-}
-function cerrar(){
-  if(panel.hidden) return;
-  panel.hidden = true;
-  abierta?.focus();
-}
-document.getElementById("cerrar").addEventListener("click", cerrar);
-document.addEventListener("keydown", e=>{ if(e.key==="Escape") cerrar(); });
-document.addEventListener("click", e=>{ if(!panel.hidden && !panel.contains(e.target) && !e.target.closest(".area")) cerrar(); });
 
 document.getElementById("otros").innerHTML = OTROS.map(o=>
   `<details class="fila"><summary>${o.titulo}</summary><div class="contenido"><p>${o.texto}</p></div></details>`
