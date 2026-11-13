@@ -11,7 +11,7 @@
 <style>
   /* =========================================================
      COLORES Y MEDIDAS — cambia aquí y se actualiza todo el sitio
-     (sacados del template de InDesign Página_Portafolio3, versión del 10-11-2026: 1440 px de ancho)
+     (sacados del template de InDesign Página_Portafolio_LluviaIdeas: 1440 px de ancho)
      ========================================================= */
   :root{
     --fondo:#292929;        /* fondo de la página */
@@ -39,23 +39,28 @@
   .barra a:not(.circulo):hover{text-decoration:underline;text-underline-offset:6px}
 
   /* ---------- Nombre ---------- */
-  .nombre{text-align:center;text-transform:uppercase;color:var(--texto-suave);margin:95px 0 0;padding:0 16px;line-height:28px}
+  .nombre{text-align:center;text-transform:uppercase;color:var(--texto-suave);margin:121px 0 0;padding:0 16px;line-height:28px}
   .nombre h1,.nombre p{font:inherit;margin:0}
 
-  /* ---------- Áreas: cuatro fotos con su título al centro ---------- */
-  .areas{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 10px;margin-top:106px}
-  .area{position:relative;aspect-ratio:347/451;overflow:hidden;background:var(--casilla);display:block;width:100%}
-  .area img{width:100%;height:100%;object-fit:cover;filter:brightness(.7)}
-  .area span{position:absolute;inset:0;display:grid;place-items:center;padding:0 12px;font-family:var(--sans);font-size:30px;letter-spacing:.16em;text-transform:uppercase;text-align:center;text-shadow:0 1px 12px rgba(0,0,0,.5);transition:color .2s,text-shadow .2s}
-  .area::after{content:"";position:absolute;inset:0;background:rgba(190,190,190,.6);opacity:0;transition:opacity .2s}
-  .area span{z-index:1}
-  a.area:hover::after,a.area:focus-visible::after{opacity:1}
-  a.area:hover span,a.area:focus-visible span{color:#000;text-shadow:none}
+  /* ---------- Muro de trabajos: cuatro columnas de cajas de distinto alto ---------- */
+  .muro{columns:4;column-gap:22px;max-width:1180px;margin:110px auto 0;padding:0 16px}
+  .obra{display:block;break-inside:avoid;margin-bottom:22px}
+  .foto{background:var(--casilla);overflow:hidden}
+  .foto img,.foto video{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.85);transition:filter .3s}
+  .obra:hover .foto img,.obra:hover .foto video,.obra:focus-visible .foto img,.obra:focus-visible .foto video{filter:none}
+  .ancha{aspect-ratio:2/1}
+  .media{aspect-ratio:4/3}
+  .cuadrada{aspect-ratio:1/1}
+  .obra h2{font-family:var(--sans);font-weight:400;text-transform:uppercase;margin:0;line-height:1.1}
+  .obra .chico{font-size:15px;margin-top:10px}
+  .obra .grande{font-size:44px;margin-bottom:8px}
+  .obra .espaciado{font-size:34px;letter-spacing:.5em;margin-bottom:8px}
+  .obra .area-obra{display:block;margin-top:4px;font-size:12px;color:var(--texto-suave);text-transform:uppercase}
 
-  .bajada{max-width:912px;margin:104px auto 0;text-align:center;text-transform:uppercase;color:var(--texto-suave);padding:0 16px}
+  .bajada{max-width:912px;margin:150px auto 0;text-align:center;text-transform:uppercase;color:var(--texto-suave);padding:0 16px}
 
   /* ---------- Otros: filas desplegables ---------- */
-  .otros{padding:132px 30px 0}
+  .otros{padding:156px 30px 0}
   .otros h2{font:inherit;text-align:center;margin:0 0 20px}
   .fila{border:1px solid rgba(255,255,255,.45);margin-bottom:47px}
   .fila summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:53px;padding:0 33px 0 15px;text-transform:uppercase;cursor:pointer}
@@ -66,7 +71,7 @@
   .fila .contenido p{margin:0}
 
   /* ---------- Contacto ---------- */
-  .contacto{padding:55px 16px 0;text-align:center}
+  .contacto{padding:93px 16px 0;text-align:center}
   .contacto h2{font-size:15px;font-weight:300;color:var(--texto-suave);margin:0}
   .correo{font-size:15px;margin-top:37px}
   .correo:hover{text-decoration:underline;text-underline-offset:6px}
@@ -74,25 +79,25 @@
   .redes{display:flex;justify-content:center;flex-wrap:wrap;gap:12px 75px;list-style:none;padding:0;margin:0;font-size:13px}
   .redes a{color:var(--texto-suave)}
   .redes a:hover{color:var(--texto)}
-  footer{padding:88px 16px 47px;text-align:center;font-size:10px}
+  footer{padding:90px 16px 47px;text-align:center;font-size:10px}
   footer .marca{font-family:var(--sans)}
 
   /* ---------- Pantallas medianas y celular ---------- */
-  @media (max-width:1300px){
-    .area span{font-size:24px;letter-spacing:.12em}
+  @media (max-width:1100px){
+    .muro{columns:3}
+    .obra .grande{font-size:34px}
+    .obra .espaciado{font-size:26px;letter-spacing:.35em}
   }
   @media (max-width:900px){
     .barra{padding:32px 24px 0;font-size:17px}
-    .areas{grid-template-columns:repeat(2,1fr)}
-    .area span{font-size:28px}
+    .muro{columns:2}
     .otros{padding:120px 16px 0}
     .redes{gap:12px 64px}
   }
   @media (max-width:760px){
     .barra{padding:24px 16px 0;font-size:15px}
     .nombre{margin-top:64px;font-size:13px}
-    .areas{grid-template-columns:1fr;margin-top:64px}
-    .area{aspect-ratio:4/3}
+    .muro{columns:1;margin-top:64px}
     .bajada{margin-top:64px;font-size:14px}
     .otros{padding-top:96px}
     .fila{margin-bottom:24px}
@@ -117,14 +122,14 @@
   </nav>
   <div class="nombre">
     <p>Portafolio</p>
-    <h1>Felipe Villegas</h1>
+    <h1>Felipe Villegas Mancilla</h1>
     <p>Estudiante Ing Diseño – Ing Comercial</p>
   </div>
 </header>
 
 <main>
-  <section id="trabajos" aria-label="Áreas de trabajo">
-    <div class="areas" id="lista"></div>
+  <section id="trabajos" aria-label="Trabajos">
+    <div class="muro" id="lista"></div>
     <p class="bajada">Portafolio consiste en mostrar la forma en que se complementa la idea junto con el oficio, y de cómo se puede complementar lo análogo con lo digital para fabricar distintos objetos y piezas.</p>
   </section>
 
@@ -150,16 +155,29 @@
 <script>
 /* =========================================================
    CONTENIDO EDITABLE
-   Cada área es una foto con su título al centro. "imagen" es la ruta
-   de la foto dentro de la carpeta img/. Si le agregas "pagina",
-   al hacer clic lleva a esa página con los trabajos del área.
+   Cada trabajo es una caja del muro, en este orden (sorteado al azar).
+   "foto" o "video": ruta dentro de img/trabajos/.
+   "forma": ancha (2:1), media (4:3) o cuadrada (1:1).
+   "titulo": chico (debajo), grande o espaciado (encima de la foto).
+   Al hacer clic lleva a la página de su área.
    ========================================================= */
-const AREAS = [
-  { area:"Oficio", imagen:"img/area-oficio.jpg",
-    pagina:"oficio.html" },
-  { area:"Fab digital", imagen:"img/area-fab-digital.jpg", pagina:"fab-digital.html" },
-  { area:"Idea", imagen:"img/area-conceptualizacion.jpg", pagina:"idea.html" },
-  { area:"Escala", imagen:"img/area-escala.jpg", pagina:"escala.html" }
+const AREAS = {
+  "Oficio":"oficio.html", "Fab digital":"fab-digital.html",
+  "Idea":"idea.html", "Escala":"escala.html"
+};
+const TRABAJOS = [
+  { nombre:"Brazo robótico",       area:"Fab digital", video:"brazo-robotico.mp4",    forma:"media",    titulo:"chico" },
+  { nombre:"Lookid",               area:"Idea",        foto:"lookid.jpg",             forma:"cuadrada", titulo:"grande" },
+  { nombre:"Manubrio F1",          area:"Fab digital", foto:"manubrio-f1.jpg",        forma:"media",    titulo:"chico" },
+  { nombre:"Silla parásito",       area:"Escala",      foto:"silla-parasito.jpg",     forma:"media",    titulo:"chico" },
+  { nombre:"Uniones japonesas",    area:"Oficio",      foto:"uniones-japonesas.jpg",  forma:"ancha",    titulo:"chico" },
+  { nombre:"Juguete STEM",         area:"Escala",      foto:"juguete-stem.jpg",       forma:"media",    titulo:"chico" },
+  { nombre:"Kuruf",                area:"Idea",        foto:"kuruf.jpg",              forma:"ancha",    titulo:"espaciado" },
+  { nombre:"Silla LCW",            area:"Oficio",      foto:"silla-lcw.jpg",          forma:"cuadrada", titulo:"chico" },
+  { nombre:"Casa",                 area:"Escala",      foto:"casa.jpg",               forma:"media",    titulo:"grande" },
+  { nombre:"Cacho digital",        area:"Fab digital", foto:"cacho-digital.jpg",      forma:"cuadrada", titulo:"chico" },
+  { nombre:"Corte en sheet metal", area:"Oficio",      foto:"corte-sheet-metal.jpg",  forma:"media",    titulo:"chico" },
+  { nombre:"Intervención UAI",     area:"Idea",        foto:"intervencion-uai.jpg",   forma:"ancha",    titulo:"chico" }
 ];
 
 /* Filas de "Otros": cada una se despliega al hacer clic. */
@@ -175,13 +193,16 @@ const CORREO = "pipevillegasm@gmail.com";
    FUNCIONAMIENTO — no necesitas editar debajo de esta línea
    ========================================================= */
 const lista = document.getElementById("lista");
-AREAS.forEach(t=>{
-  const el = document.createElement(t.pagina ? "a" : "div");
-  el.className = "area";
-  if(t.pagina) el.href = t.pagina;
-  el.innerHTML = `<img src="${t.imagen}" alt="" loading="lazy"><span>${t.area}</span>`;
-  lista.appendChild(el);
-});
+lista.innerHTML = TRABAJOS.map(t=>{
+  const medio = t.video
+    ? `<video src="img/trabajos/${t.video}" muted loop autoplay playsinline></video>`
+    : `<img src="img/trabajos/${t.foto}" alt="" loading="lazy">`;
+  const foto = `<div class="foto ${t.forma}">${medio}</div>`;
+  const area = `<span class="area-obra">${t.area}</span>`;
+  return t.titulo === "chico"
+    ? `<a class="obra" href="${AREAS[t.area]}">${foto}<h2 class="chico">${t.nombre}</h2>${area}</a>`
+    : `<a class="obra" href="${AREAS[t.area]}"><h2 class="${t.titulo}">${t.nombre}</h2>${foto}${area}</a>`;
+}).join("");
 
 document.getElementById("otros").innerHTML = OTROS.map(o=>
   `<details class="fila"><summary>${o.titulo}</summary><div class="contenido"><p>${o.texto}</p></div></details>`
