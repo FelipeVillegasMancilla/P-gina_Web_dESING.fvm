@@ -80,6 +80,30 @@
   footer{padding:90px 16px 47px;text-align:center;font-size:10px}
   footer .marca{font-family:var(--sans)}
 
+  /* ---------- Pop up de un trabajo: carrusel a la izquierda, datos a la derecha ---------- */
+  .ficha{border:0;padding:0;width:min(1416px,100% - 24px);height:min(552px,100% - 24px);max-width:none;max-height:none;background:#393939;color:var(--texto);font-family:var(--mono);overflow:hidden}
+  .ficha::backdrop{background:rgba(20,20,20,.75)}
+  .ficha[open]{display:grid;grid-template-columns:1fr 1fr}
+  .carrusel{position:relative;background:var(--casilla);overflow:hidden;min-height:0}
+  .carrusel img,.carrusel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
+  .carrusel .activa{opacity:1}
+  .carrusel button{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;font-size:28px;line-height:1;color:var(--texto);text-shadow:0 1px 8px rgba(0,0,0,.6)}
+  .carrusel .anterior{left:8px}
+  .carrusel .siguiente{right:8px}
+  .puntos{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:10px}
+  .puntos span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4)}
+  .puntos .activa{background:var(--texto)}
+  .datos{position:relative;display:flex;flex-direction:column;justify-content:center;gap:40px;padding:48px 15px 48px 199px;text-align:right;color:rgba(255,255,255,.8);overflow:auto}
+  .datos .cabeza{display:grid;grid-template-columns:auto 1fr}
+  .datos .anio{text-align:left}
+  .datos h2{font:inherit;text-transform:uppercase;margin:0}
+  .datos .ramo{grid-column:2}
+  .datos p{margin:0}
+  .datos .integrantes h3{font:inherit;margin:0 0 20px;text-align:center}
+  .datos .integrantes ul{list-style:none;margin:0;padding:0}
+  .ficha .cerrar{position:absolute;top:16px;right:15px;font-size:13px;text-transform:uppercase;color:var(--texto-suave)}
+  .ficha .cerrar:hover{color:var(--texto)}
+
   /* ---------- Pantallas medianas y celular ---------- */
   @media (max-width:1100px){
     .muro{columns:3}
@@ -87,6 +111,7 @@
   @media (max-width:900px){
     .barra{padding:32px 24px 0;font-size:17px}
     .muro{columns:2}
+    .datos{padding-left:32px}
     .otros{padding:120px 16px 0}
     .redes{gap:12px 64px}
   }
@@ -101,6 +126,10 @@
     .contacto{padding-top:96px}
     .redes{gap:12px 32px;font-size:12px}
     footer{padding:48px 16px}
+    .ficha{height:fit-content;max-height:calc(100% - 24px);overflow:auto}
+    .ficha[open]{grid-template-columns:1fr}
+    .carrusel{aspect-ratio:4/3}
+    .datos{padding:48px 16px 24px;gap:28px;overflow:visible}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -148,13 +177,22 @@
 
 <footer>@<span class="marca">dESIGN.FVM</span></footer>
 
+<dialog class="ficha" id="ficha" aria-labelledby="ficha-titulo">
+  <div class="carrusel" id="carrusel"></div>
+  <div class="datos" id="datos"></div>
+</dialog>
+
 <script>
 /* =========================================================
    CONTENIDO EDITABLE
    Cada trabajo es una caja del muro, en este orden (sorteado al azar).
    "foto" o "video": ruta dentro de img/trabajos/.
    "forma": ancha (2:1), media (4:3) o cuadrada (1:1).
-   Al hacer clic lleva a la página de su área.
+   Al hacer clic se abre su pop up. Datos opcionales del pop up
+   (los que falten no se muestran):
+     fotos: ["otra.jpg", ...]  más fotos para el carrusel
+     anio, ramo, descripcion: textos
+     integrantes: ["Nombre", ...]
    ========================================================= */
 const AREAS = {
   "Oficio":"oficio.html", "Fab digital":"fab-digital.html",
@@ -196,6 +234,60 @@ lista.innerHTML = TRABAJOS.map(t=>{
   const area = `<span class="area-obra">${t.area}</span>`;
   return `<a class="obra" href="${AREAS[t.area]}">${foto}<h2 class="chico">${t.nombre}</h2>${area}</a>`;
 }).join("");
+
+/* ---------- Pop up con carrusel ---------- */
+const ficha = document.getElementById("ficha");
+const carrusel = document.getElementById("carrusel");
+const datos = document.getElementById("datos");
+let vistas = [], actual = 0;
+
+function mostrar(i){
+  actual = (i + vistas.length) % vistas.length;
+  vistas.forEach((v,k)=>v.classList.toggle("activa", k===actual));
+  carrusel.querySelectorAll(".puntos span").forEach((p,k)=>p.classList.toggle("activa", k===actual));
+}
+
+function abrir(t){
+  const medios = [t.video || t.foto, ...(t.fotos || [])];
+  carrusel.innerHTML = medios.map(m => m.endsWith(".mp4")
+    ? `<video src="img/trabajos/${m}" muted loop autoplay playsinline></video>`
+    : `<img src="img/trabajos/${m}" alt="${t.nombre}">`).join("")
+    + (medios.length > 1
+      ? `<button class="anterior" aria-label="Foto anterior">‹</button><button class="siguiente" aria-label="Foto siguiente">›</button>
+         <div class="puntos">${medios.map(()=>"<span></span>").join("")}</div>`
+      : "");
+  vistas = [...carrusel.querySelectorAll("img,video")];
+  carrusel.querySelector(".anterior")?.addEventListener("click", ()=>mostrar(actual-1));
+  carrusel.querySelector(".siguiente")?.addEventListener("click", ()=>mostrar(actual+1));
+  datos.innerHTML = `<button class="cerrar" id="cerrar">Cerrar</button>
+    <div class="cabeza">
+      <span class="anio">${t.anio || ""}</span>
+      <h2 id="ficha-titulo">${t.nombre}</h2>
+      ${t.ramo ? `<span class="ramo">${t.ramo}</span>` : ""}
+    </div>
+    ${t.descripcion ? `<p>${t.descripcion}</p>` : ""}
+    ${t.integrantes ? `<div class="integrantes"><h3>Integrantes</h3><ul>${t.integrantes.map(n=>`<li>${n}</li>`).join("")}</ul></div>` : ""}`;
+  document.getElementById("cerrar").addEventListener("click", ()=>ficha.close());
+  mostrar(0);
+  ficha.showModal();
+}
+
+lista.querySelectorAll(".obra").forEach((a,i)=>a.addEventListener("click", e=>{ e.preventDefault(); abrir(TRABAJOS[i]); }));
+ficha.addEventListener("click", e=>{ if(e.target===ficha) ficha.close(); });
+ficha.addEventListener("keydown", e=>{
+  if(vistas.length < 2) return;
+  if(e.key==="ArrowLeft") mostrar(actual-1);
+  if(e.key==="ArrowRight") mostrar(actual+1);
+});
+let toqueX = null;
+carrusel.addEventListener("touchstart", e=>{ toqueX = e.touches[0].clientX; }, {passive:true});
+carrusel.addEventListener("touchend", e=>{
+  if(toqueX===null || vistas.length < 2) return;
+  const dx = e.changedTouches[0].clientX - toqueX;
+  if(Math.abs(dx) > 40) mostrar(actual + (dx < 0 ? 1 : -1));
+  toqueX = null;
+});
+ficha.addEventListener("close", ()=>{ if(!ficha.open) carrusel.innerHTML = ""; });
 
 document.getElementById("otros").innerHTML = OTROS.map(o=>
   `<details class="fila"><summary>${o.titulo}</summary><div class="contenido"><p>${o.texto}</p></div></details>`
