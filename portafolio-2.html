@@ -87,9 +87,15 @@
   .carrusel{position:relative;background:var(--casilla);overflow:hidden;min-height:0}
   .carrusel img,.carrusel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
   .carrusel .activa{opacity:1}
-  .carrusel button{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;font-size:28px;line-height:1;color:var(--texto);text-shadow:0 1px 8px rgba(0,0,0,.6)}
+  /* Flechas: solo la punta, con la misma línea fina que gira en las filas de "Otros" */
+  .carrusel button{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;z-index:1;filter:drop-shadow(0 0 4px rgba(0,0,0,.6))}
+  .carrusel button::before{content:"";position:absolute;top:50%;left:50%;width:18px;height:18px;border-top:1px solid rgba(255,255,255,.8);border-left:1px solid rgba(255,255,255,.8);transition:border-color .2s}
   .carrusel .anterior{left:8px}
+  .carrusel .anterior::before{transform:translate(-30%,-50%) rotate(-45deg)}
   .carrusel .siguiente{right:8px}
+  .carrusel .siguiente::before{transform:translate(-70%,-50%) rotate(135deg)}
+  .carrusel button:hover::before{border-color:var(--texto)}
+  .carrusel.una-foto button{opacity:.3;pointer-events:none}
   .puntos{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:10px}
   .puntos span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4)}
   .puntos .activa{background:var(--texto)}
@@ -226,7 +232,7 @@ const OTROS = [
   { titulo:"Manufactura personal", texto:"PENDIENTE: piezas hechas a mano." }
 ];
 
-const CORREO = "pipevillegasm@gmail.com";
+const CORREO = "FelipeVillegasMancilla@gmail.com";
 
 /* =========================================================
    FUNCIONAMIENTO — no necesitas editar debajo de esta línea
@@ -259,10 +265,9 @@ function abrir(trabajo){
   carrusel.innerHTML = medios.map(m => m.endsWith(".mp4")
     ? `<video src="img/trabajos/${m}" muted loop autoplay playsinline></video>`
     : `<img src="img/trabajos/${m}" alt="${t.nombre}">`).join("")
-    + (medios.length > 1
-      ? `<button class="anterior" aria-label="Foto anterior">‹</button><button class="siguiente" aria-label="Foto siguiente">›</button>
-         <div class="puntos">${medios.map(()=>"<span></span>").join("")}</div>`
-      : "");
+    + `<button class="anterior" aria-label="Foto anterior"></button><button class="siguiente" aria-label="Foto siguiente"></button>`
+    + (medios.length > 1 ? `<div class="puntos">${medios.map(()=>"<span></span>").join("")}</div>` : "");
+  carrusel.classList.toggle("una-foto", medios.length < 2);
   vistas = [...carrusel.querySelectorAll("img,video")];
   carrusel.querySelector(".anterior")?.addEventListener("click", ()=>mostrar(actual-1));
   carrusel.querySelector(".siguiente")?.addEventListener("click", ()=>mostrar(actual+1));
