@@ -188,8 +188,8 @@
    Cada trabajo es una caja del muro, en este orden (sorteado al azar).
    "foto" o "video": ruta dentro de img/trabajos/.
    "forma": ancha (2:1), media (4:3) o cuadrada (1:1).
-   Al hacer clic se abre su pop up. Datos opcionales del pop up
-   (los que falten no se muestran):
+   Al hacer clic se abre su pop up. Datos del pop up
+   (los que falten muestran el texto de RELLENO):
      fotos: ["otra.jpg", ...]  más fotos para el carrusel
      anio, ramo, descripcion: textos
      integrantes: ["Nombre", ...]
@@ -212,6 +212,12 @@ const TRABAJOS = [
   { nombre:"Corte en sheet metal", area:"Oficio",      foto:"corte-sheet-metal.jpg",  forma:"media" },
   { nombre:"Intervención UAI",     area:"Idea",        foto:"intervencion-uai.jpg",   forma:"ancha" }
 ];
+
+/* Texto de relleno del pop up mientras no estén los datos reales */
+const RELLENO = {
+  anio:"Año", ramo:"Ramo", integrantes:["Integrantes"],
+  descripcion:"Em ommorum rei conte que morum, prae atus sentiquid conihicis bonsunt erdis? Nam quostil icavoccit vius; et virio pliu simus, ca missentilles etium, Cati, consunum in dena con st videt, num publiae in screm patu coneque es! Sp."
+};
 
 /* Filas de "Otros": cada una se despliega al hacer clic. */
 const OTROS = [
@@ -247,7 +253,8 @@ function mostrar(i){
   carrusel.querySelectorAll(".puntos span").forEach((p,k)=>p.classList.toggle("activa", k===actual));
 }
 
-function abrir(t){
+function abrir(trabajo){
+  const t = { ...RELLENO, ...trabajo };
   const medios = [t.video || t.foto, ...(t.fotos || [])];
   carrusel.innerHTML = medios.map(m => m.endsWith(".mp4")
     ? `<video src="img/trabajos/${m}" muted loop autoplay playsinline></video>`
@@ -261,12 +268,12 @@ function abrir(t){
   carrusel.querySelector(".siguiente")?.addEventListener("click", ()=>mostrar(actual+1));
   datos.innerHTML = `<button class="cerrar" id="cerrar">Cerrar</button>
     <div class="cabeza">
-      <span class="anio">${t.anio || ""}</span>
+      <span class="anio">${t.anio}</span>
       <h2 id="ficha-titulo">${t.nombre}</h2>
-      ${t.ramo ? `<span class="ramo">${t.ramo}</span>` : ""}
+      <span class="ramo">${t.ramo}</span>
     </div>
-    ${t.descripcion ? `<p>${t.descripcion}</p>` : ""}
-    ${t.integrantes ? `<div class="integrantes"><h3>Integrantes</h3><ul>${t.integrantes.map(n=>`<li>${n}</li>`).join("")}</ul></div>` : ""}`;
+    <p>${t.descripcion}</p>
+    <div class="integrantes"><h3>Integrantes</h3><ul>${t.integrantes.map(n=>`<li>${n}</li>`).join("")}</ul></div>`;
   document.getElementById("cerrar").addEventListener("click", ()=>ficha.close());
   mostrar(0);
   ficha.showModal();
