@@ -274,11 +274,15 @@ const CORREO = "FelipeVillegasMancilla@gmail.com";
 const lista = document.getElementById("lista");
 /* Un medio (foto o video) de img/proyectos/; el video usa de póster
    la primera foto del trabajo, por si el navegador no lo puede reproducir */
+/* Cambia este número cada vez que reemplaces fotos con el mismo nombre,
+   así el navegador no muestra las antiguas guardadas en memoria */
+const VERSION_FOTOS = "4.14";
+const ruta = m => `img/proyectos/${m}?v=${VERSION_FOTOS}`;
 function medio(m, t, extra=""){
   const poster = t.medios.find(x=>!x.endsWith(".mp4"));
   return m.endsWith(".mp4")
-    ? `<video src="img/proyectos/${m}"${poster ? ` poster="img/proyectos/${poster}"` : ""} muted loop playsinline ${extra.includes("preload") ? extra : "autoplay"}></video>`
-    : `<img src="img/proyectos/${m}" alt="${t.nombre}"${m.includes("-lamina") ? ' class="lamina"' : ""} ${extra}>`;
+    ? `<video src="${ruta(m)}"${poster ? ` poster="${ruta(poster)}"` : ""} muted loop playsinline ${extra.includes("preload") ? extra : "autoplay"}></video>`
+    : `<img src="${ruta(m)}" alt="${t.nombre}"${m.includes("-lamina") ? ' class="lamina"' : ""} ${extra}>`;
 }
 
 lista.innerHTML = TRABAJOS.map(t=>{
