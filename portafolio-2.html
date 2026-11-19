@@ -101,12 +101,14 @@
   .puntos{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:10px}
   .puntos span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4)}
   .puntos .activa{background:var(--texto)}
-  .datos{position:relative;display:flex;flex-direction:column;justify-content:center;gap:40px;padding:48px 15px 48px 199px;text-align:right;color:var(--texto-suave);overflow:auto}
+  .datos{position:relative;display:flex;flex-direction:column;justify-content:safe center;gap:32px;padding:48px 15px 48px 199px;text-align:right;color:var(--texto-suave);overflow:auto}
   .datos .cabeza{display:grid;grid-template-columns:auto 1fr;align-items:baseline}
   .datos .anio{text-align:left;font-size:22px}
   .datos h2{font-family:var(--titulo);font-size:20px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;color:var(--texto);margin:0}
   .datos .ramo{grid-column:2}
   .datos p{margin:0}
+  .datos .detalle{display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.45}
+  .datos .detalle b{font-weight:400;color:var(--texto)}
   .datos .integrantes h3{font:inherit;margin:0 0 6px}
   .datos .integrantes ul{list-style:none;margin:0;padding:0}
   /* Cerrar: círculo con una x, del mismo trazo que el círculo de la barra */
@@ -212,7 +214,9 @@
    "anio": año del proyecto (va arriba en el pop up).
    Al hacer clic se abre su pop up. Datos del pop up
    (los que falten muestran el texto de RELLENO):
-     anio, ramo, descripcion: textos
+     anio, ramo: textos
+     objetivo, tecnica, materiales, herramientas, descripcion: textos
+     de la ficha técnica
      integrantes: ["Nombre", ...]
    ========================================================= */
 const TRABAJOS = [
@@ -257,8 +261,22 @@ const TRABAJOS = [
 /* Texto de relleno del pop up mientras no estén los datos reales */
 const RELLENO = {
   anio:"Año", ramo:"Ramo", integrantes:["Integrantes"],
+  objetivo:"Em ommorum rei conte que morum, prae atus sentiquid conihicis bonsunt erdis.",
+  tecnica:"Nam quostil icavoccit",
+  materiales:"Vius et virio - pliu simus - ca missentilles",
+  herramientas:"Etium cati - consunum in dena",
   descripcion:"Em ommorum rei conte que morum, prae atus sentiquid conihicis bonsunt erdis? Nam quostil icavoccit vius; et virio pliu simus, ca missentilles etium, Cati, consunum in dena con st videt, num publiae in screm patu coneque es! Sp."
 };
+
+/* Ficha técnica del pop up, en este orden. Si un trabajo deja un
+   campo vacío ("") ese renglón no aparece. */
+const CAMPOS = [
+  ["objetivo", "Objetivo"],
+  ["tecnica", "Técnica de fabricación"],
+  ["materiales", "Materiales"],
+  ["herramientas", "Herramientas"],
+  ["descripcion", "Descripción"]
+];
 
 /* Filas de "Otros": cada una se despliega al hacer clic. */
 const OTROS = [
@@ -324,7 +342,7 @@ function abrir(trabajo){
       <h2 id="ficha-titulo">${t.nombre}</h2>
       <span class="ramo">${t.ramo}</span>
     </div>
-    <p>${t.descripcion}</p>
+    <div class="detalle">${CAMPOS.filter(([k])=>t[k]).map(([k,nombre])=>`<p><b>${nombre}:</b> ${t[k]}</p>`).join("")}</div>
     <div class="integrantes"><h3>Integrantes</h3><ul>${t.integrantes.map(n=>`<li>${n}</li>`).join("")}</ul></div>`;
   document.getElementById("cerrar").addEventListener("click", ()=>ficha.close());
   mostrar(0);
