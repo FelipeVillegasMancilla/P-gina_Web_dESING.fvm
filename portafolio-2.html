@@ -7,7 +7,7 @@
 <meta name="description" content="Portafolio personal de Felipe Villegas Mancilla, estudiante de Ingeniería en Diseño e Ingeniería Comercial.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Source+Code+Pro:wght@300;400;500&family=Source+Sans+3:wght@400&display=swap" rel="stylesheet">
 <style>
   /* =========================================================
      COLORES Y MEDIDAS — cambia aquí y se actualiza todo el sitio
@@ -20,6 +20,7 @@
     --casilla:#000000;      /* fondo detrás de cada foto */
     --mono:"Source Code Pro", ui-monospace, "Cascadia Mono", Consolas, monospace;
     --sans:"Inter", "Acumin Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --titulo:"Source Sans 3", "Source Sans Pro", system-ui, sans-serif;  /* título del pop up */
   }
 
   *,*::before,*::after{box-sizing:border-box}
@@ -87,28 +88,32 @@
   .carrusel{position:relative;background:var(--casilla);overflow:hidden;min-height:0}
   .carrusel img,.carrusel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
   .carrusel .activa{opacity:1}
-  /* Flechas: solo la punta, con la misma línea fina que gira en las filas de "Otros" */
+  /* Flechas: solo la punta, en blanco y con trazo de 2 px */
   .carrusel button{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;z-index:1;filter:drop-shadow(0 0 4px rgba(0,0,0,.6))}
-  .carrusel button::before{content:"";position:absolute;top:50%;left:50%;width:18px;height:18px;border-top:1px solid rgba(255,255,255,.8);border-left:1px solid rgba(255,255,255,.8);transition:border-color .2s}
+  .carrusel button::before{content:"";position:absolute;top:50%;left:50%;width:20px;height:20px;border-top:2px solid var(--texto);border-left:2px solid var(--texto)}
   .carrusel .anterior{left:8px}
   .carrusel .anterior::before{transform:translate(-30%,-50%) rotate(-45deg)}
   .carrusel .siguiente{right:8px}
   .carrusel .siguiente::before{transform:translate(-70%,-50%) rotate(135deg)}
-  .carrusel button:hover::before{border-color:var(--texto)}
   .carrusel.una-foto button{opacity:.3;pointer-events:none}
   .puntos{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:10px}
   .puntos span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4)}
   .puntos .activa{background:var(--texto)}
-  .datos{position:relative;display:flex;flex-direction:column;justify-content:center;gap:40px;padding:48px 15px 48px 199px;text-align:right;color:rgba(255,255,255,.8);overflow:auto}
-  .datos .cabeza{display:grid;grid-template-columns:auto 1fr}
-  .datos .anio{text-align:left}
-  .datos h2{font:inherit;text-transform:uppercase;margin:0}
+  .datos{position:relative;display:flex;flex-direction:column;justify-content:center;gap:40px;padding:48px 15px 48px 199px;text-align:right;color:var(--texto-suave);overflow:auto}
+  .datos .cabeza{display:grid;grid-template-columns:auto 1fr;align-items:baseline}
+  .datos .anio{text-align:left;font-size:22px}
+  .datos h2{font-family:var(--titulo);font-size:20px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;color:var(--texto);margin:0}
   .datos .ramo{grid-column:2}
   .datos p{margin:0}
-  .datos .integrantes h3{font:inherit;margin:0 0 20px;text-align:center}
+  .datos .integrantes h3{font:inherit;margin:0 0 6px}
   .datos .integrantes ul{list-style:none;margin:0;padding:0}
-  .ficha .cerrar{position:absolute;top:16px;right:15px;font-size:13px;text-transform:uppercase;color:var(--texto-suave)}
-  .ficha .cerrar:hover{color:var(--texto)}
+  /* Cerrar: círculo con una x, del mismo trazo que el círculo de la barra */
+  .ficha .cerrar{position:absolute;top:16px;right:15px;width:24px;height:24px;border:1px solid var(--texto);border-radius:50%}
+  .ficha .cerrar::before,.ficha .cerrar::after{content:"";position:absolute;top:50%;left:50%;width:12px;height:1px;background:var(--texto)}
+  .ficha .cerrar::before{transform:translate(-50%,-50%) rotate(45deg)}
+  .ficha .cerrar::after{transform:translate(-50%,-50%) rotate(-45deg)}
+  .ficha .cerrar:hover{background:var(--texto)}
+  .ficha .cerrar:hover::before,.ficha .cerrar:hover::after{background:#393939}
 
   /* ---------- Pantallas medianas y celular ---------- */
   @media (max-width:1100px){
@@ -149,7 +154,7 @@
   <nav class="barra" aria-label="Principal">
     <a class="circulo" href="frase.html" aria-label="Ver frase"></a>
     <a class="marca" href="#">dESIGN.FVM</a>
-    <a href="#contacto">contacto</a>
+    <a href="#contacto">Contacto</a>
   </nav>
   <div class="nombre">
     <p>Portafolio</p>
@@ -271,7 +276,7 @@ function abrir(trabajo){
   vistas = [...carrusel.querySelectorAll("img,video")];
   carrusel.querySelector(".anterior")?.addEventListener("click", ()=>mostrar(actual-1));
   carrusel.querySelector(".siguiente")?.addEventListener("click", ()=>mostrar(actual+1));
-  datos.innerHTML = `<button class="cerrar" id="cerrar">Cerrar</button>
+  datos.innerHTML = `<button class="cerrar" id="cerrar" aria-label="Cerrar"></button>
     <div class="cabeza">
       <span class="anio">${t.anio}</span>
       <h2 id="ficha-titulo">${t.nombre}</h2>
