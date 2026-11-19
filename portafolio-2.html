@@ -103,13 +103,14 @@
   .puntos .activa{background:var(--texto)}
   .datos{position:relative;display:flex;flex-direction:column;justify-content:safe center;gap:24px;padding:44px 15px 36px 120px;text-align:right;color:var(--texto-suave);overflow:auto}
   .datos .cabeza{display:grid;grid-template-columns:auto 1fr;align-items:baseline}
-  .datos .anio{text-align:left;font-size:22px}
+  .datos .anio{text-align:left;font-size:22px;font-weight:300}
   .datos h2{font-family:var(--titulo);font-size:20px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;color:var(--texto);margin:0}
   .datos .ramo{grid-column:2}
   .datos p{margin:0}
   .datos .detalle{display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.45}
   .datos .detalle b{font-weight:400;color:var(--texto)}
-  .datos .integrantes h3{font:inherit;margin:0 0 6px}
+  .datos .integrantes{font-size:14px;line-height:1.45}
+  .datos .integrantes h3{font:inherit;margin:0 0 4px}
   .datos .integrantes ul{list-style:none;margin:0;padding:0}
   /* Cerrar: círculo con una x, del mismo trazo que el círculo de la barra */
   .ficha .cerrar{position:absolute;top:16px;right:15px;width:24px;height:24px;border:1px solid var(--texto);border-radius:50%}
@@ -254,7 +255,7 @@ const TRABAJOS = [
     medios:["manubrio-f1/01.jpg", "manubrio-f1/02.jpg", "manubrio-f1/03.jpg", "manubrio-f1/04.jpg"] },
   { nombre:"Refugio", anio:"2025", sub:"Arquitectura", forma:"media",
     medios:["refugio/01.jpg", "refugio/02.jpg", "refugio/03.jpg", "refugio/04.jpg"] },
-  { nombre:"Uniones Japonesas", anio:"2024", sub:"Análogo", forma:"cuadrada",
+  { nombre:"Uniones Japonesas", anio:"2024", ramo:"Introducción a la Fabricación", sub:"Análogo", forma:"cuadrada",
     objetivo:"Conectar 3 módulos cuadrados de madera en ángulos específicos, sin que hagan contacto entre sí y cuya unión se fabrique mediante piezas impresas en 3D y de madera.",
     tecnica:"Impresión FFF",
     materiales:"6 módulos de terciado de 100x100x12 mm - PLA - 6 tarugos",
@@ -265,7 +266,7 @@ const TRABAJOS = [
 
 /* Texto de relleno del pop up mientras no estén los datos reales */
 const RELLENO = {
-  anio:"Año", ramo:"Ramo", integrantes:["Integrantes"],
+  anio:"Año", ramo:"Ramo", integrantes:[],
   objetivo:"Em ommorum rei conte que morum, prae atus sentiquid conihicis bonsunt erdis.",
   tecnica:"Nam quostil icavoccit",
   materiales:"Vius et virio - pliu simus - ca missentilles",
