@@ -101,7 +101,7 @@
   .puntos{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:10px}
   .puntos span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4)}
   .puntos .activa{background:var(--texto)}
-  .datos{position:relative;display:flex;flex-direction:column;justify-content:safe center;gap:32px;padding:48px 15px 48px 199px;text-align:right;color:var(--texto-suave);overflow:auto}
+  .datos{position:relative;display:flex;flex-direction:column;justify-content:safe center;gap:24px;padding:44px 15px 36px 120px;text-align:right;color:var(--texto-suave);overflow:auto}
   .datos .cabeza{display:grid;grid-template-columns:auto 1fr;align-items:baseline}
   .datos .anio{text-align:left;font-size:22px}
   .datos h2{font-family:var(--titulo);font-size:20px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;color:var(--texto);margin:0}
@@ -255,6 +255,11 @@ const TRABAJOS = [
   { nombre:"Refugio", anio:"2025", sub:"Arquitectura", forma:"media",
     medios:["refugio/01.jpg", "refugio/02.jpg", "refugio/03.jpg", "refugio/04.jpg"] },
   { nombre:"Uniones Japonesas", anio:"2024", sub:"Análogo", forma:"cuadrada",
+    objetivo:"Conectar 3 módulos cuadrados de madera en ángulos específicos, sin que hagan contacto entre sí y cuya unión se fabrique mediante piezas impresas en 3D y de madera.",
+    tecnica:"Impresión FFF",
+    materiales:"6 módulos de terciado de 100x100x12 mm - PLA - 6 tarugos",
+    herramientas:"Impresora Adventurer 3 - Rhinoceros 7 - Herramientas para madera",
+    descripcion:"Primero, se modelaron piezas mediante diseño generativo focalizadas en lograr 3 puntos de contacto por superficie. En el segundo caso, se usaron sobras de listones de pino que fueron cortados en una matriz angular y unidos mediante tarugos con los módulos principales.",
     medios:["uniones-japonesas/01.jpg", "uniones-japonesas/02.jpg", "uniones-japonesas/03.jpg", "uniones-japonesas/04.jpg"] }
 ];
 
