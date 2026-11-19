@@ -52,6 +52,7 @@
   .ancha{aspect-ratio:2/1}
   .media{aspect-ratio:4/3}
   .cuadrada{aspect-ratio:1/1}
+  .alta{aspect-ratio:3/4}
   .obra h2{font-family:var(--sans);font-weight:400;text-transform:uppercase;margin:0;line-height:1.1}
   .obra .chico{font-size:15px;margin-top:10px}
   .obra .area-obra{display:block;margin-top:4px;font-size:12px;color:var(--texto-suave);text-transform:uppercase}
@@ -88,6 +89,7 @@
   .carrusel{position:relative;background:var(--casilla);overflow:hidden;min-height:0}
   .carrusel img,.carrusel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
   .carrusel .activa{opacity:1}
+  .carrusel .lamina{object-fit:contain;background:#393939}  /* páginas de PDF: se ven completas */
   /* Flechas: solo la punta, en blanco y con trazo de 2 px */
   .carrusel button{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;z-index:1;filter:drop-shadow(0 0 4px rgba(0,0,0,.6))}
   .carrusel button::before{content:"";position:absolute;top:50%;left:50%;width:20px;height:20px;border-top:2px solid var(--texto);border-left:2px solid var(--texto)}
@@ -197,11 +199,13 @@
 /* =========================================================
    CONTENIDO EDITABLE
    Cada trabajo es una caja del muro, en este orden (sorteado al azar).
-   "foto" o "video": ruta dentro de img/trabajos/.
-   "forma": ancha (2:1), media (4:3) o cuadrada (1:1).
+   "medios": fotos (.jpg) y videos (.mp4) dentro de img/proyectos/, en
+   orden; el primero es la portada del muro y la foto 1 del carrusel.
+   Las que terminan en "-lamina" (páginas de PDF) se ven completas.
+   "forma": ancha (2:1), media (4:3), cuadrada (1:1) o alta (3:4).
+   "area": Oficio, Fab digital, Idea o Escala (vacío si no tiene).
    Al hacer clic se abre su pop up. Datos del pop up
    (los que falten muestran el texto de RELLENO):
-     fotos: ["otra.jpg", ...]  más fotos para el carrusel
      anio, ramo, descripcion: textos
      integrantes: ["Nombre", ...]
    ========================================================= */
@@ -210,18 +214,38 @@ const AREAS = {
   "Idea":"idea.html", "Escala":"escala.html"
 };
 const TRABAJOS = [
-  { nombre:"Brazo robótico",       area:"Fab digital", video:"brazo-robotico.mp4",    forma:"media" },
-  { nombre:"Lookid",               area:"Idea",        foto:"lookid.jpg",             forma:"cuadrada" },
-  { nombre:"Manubrio F1",          area:"Fab digital", foto:"manubrio-f1.jpg",        forma:"media" },
-  { nombre:"Silla parásito",       area:"Escala",      foto:"silla-parasito.jpg",     forma:"media" },
-  { nombre:"Uniones japonesas",    area:"Oficio",      foto:"uniones-japonesas.jpg",  forma:"ancha" },
-  { nombre:"Juguete STEM",         area:"Escala",      foto:"juguete-stem.jpg",       forma:"media" },
-  { nombre:"Kuruf",                area:"Idea",        foto:"kuruf.jpg",              forma:"ancha" },
-  { nombre:"Silla LCW",            area:"Oficio",      foto:"silla-lcw.jpg",          forma:"cuadrada" },
-  { nombre:"Casa",                 area:"Escala",      foto:"casa.jpg",               forma:"media" },
-  { nombre:"Cacho digital",        area:"Fab digital", foto:"cacho-digital.jpg",      forma:"cuadrada" },
-  { nombre:"Corte en sheet metal", area:"Oficio",      foto:"corte-sheet-metal.jpg",  forma:"media" },
-  { nombre:"Intervención UAI",     area:"Idea",        foto:"intervencion-uai.jpg",   forma:"ancha" }
+  { nombre:"Cacho Chileno", area:"Fab digital", forma:"media",
+    medios:["cacho-chileno/01.jpg", "cacho-chileno/02.jpg", "cacho-chileno/03.jpg", "cacho-chileno/04-lamina.jpg"] },
+  { nombre:"Montacarga", area:"", forma:"media",
+    medios:["montacarga/01.mp4", "montacarga/02.jpg"] },
+  { nombre:"Silla LCW", area:"Oficio", forma:"alta",
+    medios:["silla-lcw/01.jpg", "silla-lcw/02.jpg", "silla-lcw/03.jpg"] },
+  { nombre:"Intervención UAI", area:"Idea", forma:"cuadrada",
+    medios:["intervencion-uai/01a-lamina.jpg", "intervencion-uai/01b-lamina.jpg", "intervencion-uai/01c-lamina.jpg", "intervencion-uai/01d-lamina.jpg"] },
+  { nombre:"Juguete Stem", area:"Escala", forma:"alta",
+    medios:["juguete-stem/01.jpg", "juguete-stem/02.jpg", "juguete-stem/03.jpg"] },
+  { nombre:"Sheet Metal", area:"Oficio", forma:"alta",
+    medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg"] },
+  { nombre:"Casa", area:"Escala", forma:"alta",
+    medios:["casa/01.jpg", "casa/02.jpg"] },
+  { nombre:"Kuruf", area:"Idea", forma:"media",
+    medios:["kuruf/01.mp4", "kuruf/02.jpg", "kuruf/03.mp4", "kuruf/04.mp4", "kuruf/05a-lamina.jpg", "kuruf/05b-lamina.jpg"] },
+  { nombre:"Estudio Resiliencia Forestal", area:"", forma:"alta",
+    medios:["estudio-resiliencia-forestal/01.jpg", "estudio-resiliencia-forestal/02.jpg", "estudio-resiliencia-forestal/03a-lamina.jpg", "estudio-resiliencia-forestal/03b-lamina.jpg", "estudio-resiliencia-forestal/04.jpg"] },
+  { nombre:"Brazo robótico", area:"Fab digital", forma:"media",
+    medios:["brazo-robotico/01.mp4", "brazo-robotico/02.jpg", "brazo-robotico/03.jpg", "brazo-robotico/04.jpg"] },
+  { nombre:"Chicharra", area:"", forma:"media",
+    medios:["chicharra/01.jpg", "chicharra/02.jpg", "chicharra/03.jpg", "chicharra/04.jpg", "chicharra/05.jpg", "chicharra/06.jpg"] },
+  { nombre:"Manubrio F1", area:"Fab digital", forma:"media",
+    medios:["manubrio-f1/01.jpg", "manubrio-f1/02.jpg", "manubrio-f1/03.jpg", "manubrio-f1/04.jpg"] },
+  { nombre:"Silla Parásito", area:"Escala", forma:"alta",
+    medios:["silla-parasito/01.jpg", "silla-parasito/02.jpg", "silla-parasito/03.jpg", "silla-parasito/04.jpg", "silla-parasito/05.jpg", "silla-parasito/06.jpg"] },
+  { nombre:"Lookid", area:"Idea", forma:"alta",
+    medios:["lookid/01.jpg", "lookid/02.jpg", "lookid/03.jpg", "lookid/04a-lamina.jpg", "lookid/04b-lamina.jpg", "lookid/04c-lamina.jpg"] },
+  { nombre:"Refugio", area:"", forma:"media",
+    medios:["refugio/01.jpg", "refugio/02.jpg"] },
+  { nombre:"Uniones Japonesas", area:"Oficio", forma:"cuadrada",
+    medios:["uniones-japonesas/01.jpg", "uniones-japonesas/02.jpg", "uniones-japonesas/03.jpg", "uniones-japonesas/04.jpg"] }
 ];
 
 /* Texto de relleno del pop up mientras no estén los datos reales */
@@ -243,13 +267,19 @@ const CORREO = "FelipeVillegasMancilla@gmail.com";
    FUNCIONAMIENTO — no necesitas editar debajo de esta línea
    ========================================================= */
 const lista = document.getElementById("lista");
+/* Un medio (foto o video) de img/proyectos/; el video usa de póster
+   la primera foto del trabajo, por si el navegador no lo puede reproducir */
+function medio(m, t, extra=""){
+  const poster = t.medios.find(x=>!x.endsWith(".mp4"));
+  return m.endsWith(".mp4")
+    ? `<video src="img/proyectos/${m}"${poster ? ` poster="img/proyectos/${poster}"` : ""} muted loop autoplay playsinline></video>`
+    : `<img src="img/proyectos/${m}" alt="${t.nombre}"${m.includes("-lamina") ? ' class="lamina"' : ""} ${extra}>`;
+}
+
 lista.innerHTML = TRABAJOS.map(t=>{
-  const medio = t.video
-    ? `<video src="img/trabajos/${t.video}" muted loop autoplay playsinline></video>`
-    : `<img src="img/trabajos/${t.foto}" alt="" loading="lazy">`;
-  const foto = `<div class="foto ${t.forma}">${medio}</div>`;
-  const area = `<span class="area-obra">${t.area}</span>`;
-  return `<a class="obra" href="${AREAS[t.area]}">${foto}<h2 class="chico">${t.nombre}</h2>${area}</a>`;
+  const foto = `<div class="foto ${t.forma}">${medio(t.medios[0], t, 'loading="lazy"')}</div>`;
+  const area = t.area ? `<span class="area-obra">${t.area}</span>` : "";
+  return `<a class="obra" href="${AREAS[t.area] || "#"}">${foto}<h2 class="chico">${t.nombre}</h2>${area}</a>`;
 }).join("");
 
 /* ---------- Pop up con carrusel ---------- */
@@ -266,10 +296,8 @@ function mostrar(i){
 
 function abrir(trabajo){
   const t = { ...RELLENO, ...trabajo };
-  const medios = [t.video || t.foto, ...(t.fotos || [])];
-  carrusel.innerHTML = medios.map(m => m.endsWith(".mp4")
-    ? `<video src="img/trabajos/${m}" muted loop autoplay playsinline></video>`
-    : `<img src="img/trabajos/${m}" alt="${t.nombre}">`).join("")
+  const medios = t.medios;
+  carrusel.innerHTML = medios.map(m => medio(m, t)).join("")
     + `<button class="anterior" aria-label="Foto anterior"></button><button class="siguiente" aria-label="Foto siguiente"></button>`
     + (medios.length > 1 ? `<div class="puntos">${medios.map(()=>"<span></span>").join("")}</div>` : "");
   carrusel.classList.toggle("una-foto", medios.length < 2);
