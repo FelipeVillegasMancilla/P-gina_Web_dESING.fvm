@@ -209,47 +209,48 @@
      se ven siempre completas.
    "columna:true": en pantalla grande (4 columnas) ese trabajo
      empieza una columna nueva del muro.
+   "anio": año del proyecto (va arriba en el pop up).
    Al hacer clic se abre su pop up. Datos del pop up
    (los que falten muestran el texto de RELLENO):
      anio, ramo, descripcion: textos
      integrantes: ["Nombre", ...]
    ========================================================= */
 const TRABAJOS = [
-  { nombre:"Cacho Chileno", sub:"Electrónica", forma:"media",
+  { nombre:"Cacho Chileno", anio:"2026", sub:"Electrónica", forma:"media",
     medios:["cacho-chileno/01.jpg", "cacho-chileno/02.jpg", "cacho-chileno/03.jpg", "cacho-chileno/04-lamina.jpg"] },
-  { nombre:"Montacarga", sub:"Reto", forma:"media",
+  { nombre:"Montacarga", anio:"2025", sub:"Reto", forma:"media",
     medios:["montacarga/01.mp4", "montacarga/02.jpg"] },
-  { nombre:"Silla LCW", sub:"Modelado 3D", forma:"alta",
+  { nombre:"Silla LCW", anio:"2025", sub:"Modelado 3D", forma:"alta",
     medios:["silla-lcw/01.jpg", "silla-lcw/02.jpg", "silla-lcw/03.jpg"] },
-  { nombre:"Intervención UAI", sub:"Iteración", forma:"cuadrada",
+  { nombre:"Intervención UAI", anio:"2026", sub:"Iteración", forma:"cuadrada",
     medios:["intervencion-uai/01a-lamina.jpg", "intervencion-uai/01b-lamina.jpg", "intervencion-uai/01c-lamina.jpg", "intervencion-uai/01d-lamina.jpg"] },
-  { nombre:"Palmetas Aluminio", sub:"Análogo Digital", forma:"media",
+  { nombre:"Palmetas Aluminio", anio:"2026", sub:"Análogo Digital", forma:"media",
     medios:["palmetas-aluminio/01.jpg", "palmetas-aluminio/02.jpg", "palmetas-aluminio/03.jpg", "palmetas-aluminio/04.jpg", "palmetas-aluminio/05.jpg"] },
-  { nombre:"Lookid", sub:"Reto", columna:true, forma:"alta",
+  { nombre:"Lookid", anio:"2025", sub:"Reto", columna:true, forma:"alta",
     medios:["lookid/01.jpg", "lookid/02.jpg", "lookid/03.jpg", "lookid/04a-lamina.jpg", "lookid/04b-lamina.jpg", "lookid/04c-lamina.jpg", "lookid/05.mp4"] },
-  { nombre:"Sheet Metal", sub:"Fabricación Digital", forma:"cuadrada", encuadre:"50% 90%",
+  { nombre:"Sheet Metal", anio:"2025", sub:"Fabricación Digital", forma:"cuadrada", encuadre:"50% 90%",
     medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg", "sheet-metal/03.mp4"] },
-  { nombre:"Casa", sub:"Arquitectura", forma:"cuadrada", encuadre:"50% 80%",
+  { nombre:"Casa", anio:"2025", sub:"Arquitectura", forma:"cuadrada", encuadre:"50% 80%",
     medios:["casa/01.jpg", "casa/02.jpg", "casa/03.jpg"] },
-  { nombre:"Kuruf", sub:"Proyecto", forma:"media",
+  { nombre:"Kuruf", anio:"2024", sub:"Proyecto", forma:"media",
     medios:["kuruf/01.mp4", "kuruf/02.jpg", "kuruf/03.mp4", "kuruf/04.mp4", "kuruf/05a-lamina.jpg", "kuruf/05b-lamina.jpg"] },
-  { nombre:"Estructura", sub:"Brazo robótico", columna:true, forma:"media",
+  { nombre:"Estructura", anio:"2026", sub:"Brazo robótico", columna:true, forma:"media",
     medios:["brazo-robotico/01.mp4", "brazo-robotico/02.jpg", "brazo-robotico/03.jpg", "brazo-robotico/04.jpg"] },
-  { nombre:"Resiliencia Forestal", sub:"Investigación", forma:"alta",
+  { nombre:"Resiliencia Forestal", anio:"2026", sub:"Investigación", forma:"alta",
     medios:["resiliencia-forestal/01.jpg", "resiliencia-forestal/02.jpg", "resiliencia-forestal/03a-lamina.jpg", "resiliencia-forestal/03b-lamina.jpg", "resiliencia-forestal/04.jpg"] },
-  { nombre:"Chicharra", sub:"Modelado 3D", forma:"media",
+  { nombre:"Chicharra", anio:"2024", sub:"Modelado 3D", forma:"media",
     medios:["chicharra/01.jpg", "chicharra/02.jpg", "chicharra/03.jpg", "chicharra/04.jpg", "chicharra/05.jpg", "chicharra/06.jpg"] },
-  { nombre:"Juguete Stem", sub:"Prototipo", forma:"cuadrada", encuadre:"50% 70%",
+  { nombre:"Juguete Stem", anio:"2025", sub:"Prototipo", forma:"cuadrada", encuadre:"50% 70%",
     medios:["juguete-stem/01.jpg", "juguete-stem/02.jpg", "juguete-stem/03.jpg", "juguete-stem/04.mp4", "juguete-stem/05.jpg"] },
-  { nombre:"Botella", sub:"Modelado 3D", forma:"cuadrada",
+  { nombre:"Botella", anio:"2025", sub:"Modelado 3D", forma:"cuadrada",
     medios:["botella/01.jpg", "botella/02.jpg", "botella/03.jpg", "botella/04.jpg"] },
-  { nombre:"Silla Parásito", sub:"Fabricación Digital", columna:true, forma:"alta",
+  { nombre:"Silla Parásito", anio:"2025", sub:"Fabricación Digital", columna:true, forma:"alta",
     medios:["silla-parasito/01.jpg", "silla-parasito/02.jpg", "silla-parasito/03.jpg", "silla-parasito/04.jpg", "silla-parasito/05.jpg", "silla-parasito/06.jpg", "silla-parasito/07.jpg", "silla-parasito/08.mp4"] },
-  { nombre:"Manubrio F1", sub:"Fabricación Digital", forma:"media",
+  { nombre:"Manubrio F1", anio:"2025", sub:"Fabricación Digital", forma:"media",
     medios:["manubrio-f1/01.jpg", "manubrio-f1/02.jpg", "manubrio-f1/03.jpg", "manubrio-f1/04.jpg"] },
-  { nombre:"Refugio", sub:"Arquitectura", forma:"media",
+  { nombre:"Refugio", anio:"2025", sub:"Arquitectura", forma:"media",
     medios:["refugio/01.jpg", "refugio/02.jpg", "refugio/03.jpg", "refugio/04.jpg"] },
-  { nombre:"Uniones Japonesas", sub:"Análogo", forma:"cuadrada",
+  { nombre:"Uniones Japonesas", anio:"2024", sub:"Análogo", forma:"cuadrada",
     medios:["uniones-japonesas/01.jpg", "uniones-japonesas/02.jpg", "uniones-japonesas/03.jpg", "uniones-japonesas/04.jpg"] }
 ];
 
