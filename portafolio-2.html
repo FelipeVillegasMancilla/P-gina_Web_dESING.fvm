@@ -226,9 +226,9 @@ const TRABAJOS = [
   { nombre:"Palmetas Aluminio", sub:"Análogo Digital", forma:"media",
     medios:["palmetas-aluminio/01.jpg", "palmetas-aluminio/02.jpg", "palmetas-aluminio/03.jpg", "palmetas-aluminio/04.jpg", "palmetas-aluminio/05.jpg"] },
   { nombre:"Lookid", sub:"Reto", columna:true, forma:"alta",
-    medios:["lookid/01.jpg", "lookid/02.jpg", "lookid/03.jpg", "lookid/04a-lamina.jpg", "lookid/04b-lamina.jpg", "lookid/04c-lamina.jpg"] },
+    medios:["lookid/01.jpg", "lookid/02.jpg", "lookid/03.jpg", "lookid/04a-lamina.jpg", "lookid/04b-lamina.jpg", "lookid/04c-lamina.jpg", "lookid/05.mp4"] },
   { nombre:"Sheet Metal", sub:"Fabricación Digital", forma:"cuadrada", encuadre:"50% 90%",
-    medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg"] },
+    medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg", "sheet-metal/03.mp4"] },
   { nombre:"Casa", sub:"Arquitectura", forma:"cuadrada", encuadre:"50% 80%",
     medios:["casa/01.jpg", "casa/02.jpg"] },
   { nombre:"Kuruf", sub:"Proyecto", forma:"media",
@@ -277,7 +277,7 @@ const lista = document.getElementById("lista");
 function medio(m, t, extra=""){
   const poster = t.medios.find(x=>!x.endsWith(".mp4"));
   return m.endsWith(".mp4")
-    ? `<video src="img/proyectos/${m}"${poster ? ` poster="img/proyectos/${poster}"` : ""} muted loop autoplay playsinline></video>`
+    ? `<video src="img/proyectos/${m}"${poster ? ` poster="img/proyectos/${poster}"` : ""} muted loop playsinline ${extra.includes("preload") ? extra : "autoplay"}></video>`
     : `<img src="img/proyectos/${m}" alt="${t.nombre}"${m.includes("-lamina") ? ' class="lamina"' : ""} ${extra}>`;
 }
 
@@ -296,14 +296,17 @@ let vistas = [], actual = 0;
 
 function mostrar(i){
   actual = (i + vistas.length) % vistas.length;
-  vistas.forEach((v,k)=>v.classList.toggle("activa", k===actual));
+  vistas.forEach((v,k)=>{
+    v.classList.toggle("activa", k===actual);
+    if(v.tagName==="VIDEO"){ if(k===actual) v.play().catch(()=>{}); else v.pause(); }  /* solo corre el video a la vista */
+  });
   carrusel.querySelectorAll(".puntos span").forEach((p,k)=>p.classList.toggle("activa", k===actual));
 }
 
 function abrir(trabajo){
   const t = { ...RELLENO, ...trabajo };
   const medios = t.medios;
-  carrusel.innerHTML = medios.map(m => medio(m, t)).join("")
+  carrusel.innerHTML = medios.map(m => medio(m, t, 'preload="none"')).join("")
     + `<button class="anterior" aria-label="Foto anterior"></button><button class="siguiente" aria-label="Foto siguiente"></button>`
     + (medios.length > 1 ? `<div class="puntos">${medios.map(()=>"<span></span>").join("")}</div>` : "");
   carrusel.classList.toggle("una-foto", medios.length < 2);
