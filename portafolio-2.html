@@ -45,6 +45,7 @@
 
   /* ---------- Muro de trabajos: cuatro columnas de cajas de distinto alto ---------- */
   .muro{columns:4;column-gap:22px;max-width:1180px;margin:110px auto 0;padding:0 16px}
+  @media (min-width:1101px){ .obra.columna{break-before:column} }  /* empieza columna nueva */
   .obra{display:block;break-inside:avoid;margin-bottom:22px}
   .foto{background:var(--casilla);overflow:hidden}
   .foto img,.foto video{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.85);transition:filter .3s}
@@ -206,6 +207,8 @@
    "encuadre": opcional, qué parte de la portada se ve en el muro
      ("50% 0%" arriba, "50% 100%" abajo). En el pop up las fotos
      se ven siempre completas.
+   "columna:true": en pantalla grande (4 columnas) ese trabajo
+     empieza una columna nueva del muro.
    Al hacer clic se abre su pop up. Datos del pop up
    (los que falten muestran el texto de RELLENO):
      anio, ramo, descripcion: textos
@@ -220,7 +223,9 @@ const TRABAJOS = [
     medios:["silla-lcw/01.jpg", "silla-lcw/02.jpg", "silla-lcw/03.jpg"] },
   { nombre:"Intervención UAI", sub:"Iteración", forma:"cuadrada",
     medios:["intervencion-uai/01a-lamina.jpg", "intervencion-uai/01b-lamina.jpg", "intervencion-uai/01c-lamina.jpg", "intervencion-uai/01d-lamina.jpg"] },
-  { nombre:"Lookid", sub:"Reto", forma:"alta",
+  { nombre:"Palmetas Aluminio", sub:"Análogo Digital", forma:"media",
+    medios:["palmetas-aluminio/01.jpg", "palmetas-aluminio/02.jpg", "palmetas-aluminio/03.jpg", "palmetas-aluminio/04.jpg", "palmetas-aluminio/05.jpg"] },
+  { nombre:"Lookid", sub:"Reto", columna:true, forma:"alta",
     medios:["lookid/01.jpg", "lookid/02.jpg", "lookid/03.jpg", "lookid/04a-lamina.jpg", "lookid/04b-lamina.jpg", "lookid/04c-lamina.jpg"] },
   { nombre:"Sheet Metal", sub:"Fabricación Digital", forma:"cuadrada", encuadre:"50% 90%",
     medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg"] },
@@ -228,7 +233,7 @@ const TRABAJOS = [
     medios:["casa/01.jpg", "casa/02.jpg"] },
   { nombre:"Kuruf", sub:"Proyecto", forma:"media",
     medios:["kuruf/01.mp4", "kuruf/02.jpg", "kuruf/03.mp4", "kuruf/04.mp4", "kuruf/05a-lamina.jpg", "kuruf/05b-lamina.jpg"] },
-  { nombre:"Estructura", sub:"Brazo robótico", forma:"media",
+  { nombre:"Estructura", sub:"Brazo robótico", columna:true, forma:"media",
     medios:["brazo-robotico/01.mp4", "brazo-robotico/02.jpg", "brazo-robotico/03.jpg", "brazo-robotico/04.jpg"] },
   { nombre:"Resiliencia Forestal", sub:"Investigación", forma:"alta",
     medios:["resiliencia-forestal/01.jpg", "resiliencia-forestal/02.jpg", "resiliencia-forestal/03a-lamina.jpg", "resiliencia-forestal/03b-lamina.jpg", "resiliencia-forestal/04.jpg"] },
@@ -236,7 +241,9 @@ const TRABAJOS = [
     medios:["chicharra/01.jpg", "chicharra/02.jpg", "chicharra/03.jpg", "chicharra/04.jpg", "chicharra/05.jpg", "chicharra/06.jpg"] },
   { nombre:"Juguete Stem", sub:"Prototipo", forma:"cuadrada", encuadre:"50% 70%",
     medios:["juguete-stem/01.jpg", "juguete-stem/02.jpg", "juguete-stem/03.jpg"] },
-  { nombre:"Silla Parásito", sub:"Fabricación Digital", forma:"alta",
+  { nombre:"Botella", sub:"Modelado 3D", forma:"cuadrada",
+    medios:["botella/01.jpg", "botella/02.jpg", "botella/03.jpg", "botella/04.jpg"] },
+  { nombre:"Silla Parásito", sub:"Fabricación Digital", columna:true, forma:"alta",
     medios:["silla-parasito/01.jpg", "silla-parasito/02.jpg", "silla-parasito/03.jpg", "silla-parasito/04.jpg", "silla-parasito/05.jpg", "silla-parasito/06.jpg", "silla-parasito/07.jpg", "silla-parasito/08.mp4"] },
   { nombre:"Manubrio F1", sub:"Fabricación Digital", forma:"media",
     medios:["manubrio-f1/01.jpg", "manubrio-f1/02.jpg", "manubrio-f1/03.jpg", "manubrio-f1/04.jpg"] },
@@ -278,7 +285,7 @@ lista.innerHTML = TRABAJOS.map(t=>{
   const encuadre = t.encuadre ? ` style="object-position:${t.encuadre}"` : "";
   const foto = `<div class="foto ${t.forma}">${medio(t.medios[0], t, 'loading="lazy"' + encuadre)}</div>`;
   const sub = t.sub ? `<span class="area-obra">${t.sub}</span>` : "";
-  return `<a class="obra" href="#">${foto}<h2 class="chico">${t.nombre}</h2>${sub}</a>`;
+  return `<a class="obra${t.columna ? " columna" : ""}" href="#">${foto}<h2 class="chico">${t.nombre}</h2>${sub}</a>`;
 }).join("");
 
 /* ---------- Pop up con carrusel ---------- */
