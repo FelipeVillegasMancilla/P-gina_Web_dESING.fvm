@@ -101,7 +101,7 @@
   .puntos{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:10px}
   .puntos span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4)}
   .puntos .activa{background:var(--texto)}
-  .datos{position:relative;display:flex;flex-direction:column;justify-content:safe center;gap:24px;padding:44px 15px 36px 120px;text-align:right;color:var(--texto-suave);overflow:auto}
+  .datos{position:relative;display:flex;flex-direction:column;justify-content:safe center;gap:24px;padding:36px 15px 28px 120px;text-align:right;color:var(--texto-suave);overflow:auto}
   .datos .cabeza{display:grid;grid-template-columns:auto 1fr;align-items:start;text-align:right}
   .datos .anio{grid-row:1 / span 2;text-align:left;font-size:22px;font-weight:300;line-height:1.2}  /* a la altura del título */
   .datos h2{font-family:var(--titulo);font-size:21.33px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;color:var(--texto);margin:0}
@@ -226,22 +226,52 @@ const TRABAJOS = [
     tecnica:"Impresión FFF - Electrónica",
     materiales:"PLA - Cuero vegano - ESP32-C3 - Sensor GSR - Sensor de pulso APDS-9008 - Batería LiPo 3,7 V 250 mAh - LEDs",
     descripcion:"El juego incorpora un vaso con sensor galvánico y una pulsera con sensor de frecuencia cardíaca. Ambos leen el sudor y el pulso del jugador, calculan su nivel de estrés y lo muestran con una luz: verde si dice la verdad y roja si miente.",
-    integrantes:["Lucas Sunnah", "María José Fuentealba", "Felipe Villegas"],
+    integrantes:["Felipe Villegas", "Lucas Sunnah", "María José Fuentealba"],
     medios:["cacho-chileno/01.jpg", "cacho-chileno/02.jpg", "cacho-chileno/03.jpg", "cacho-chileno/04-lamina.jpg"] },
-  { nombre:"Montacarga", anio:"2025", sub:"Reto", forma:"media",
+  { nombre:"Montacarga", anio:"2025", ramo:"Diseño y Mecanismos", sub:"Reto", forma:"media",
+    objetivo:"Replicar el mecanismo de las Strandbeest de Theo Jansen y adaptarlo a una nueva función: levantar carga. Se desarrolló primero en digital, con simulaciones, y luego como prototipo físico.",
+    tecnica:"Router CNC - Impresión FFF",
+    materiales:"Terciado de pino - PLA - Hilo sin fin - Tuercas, pernos y golillas",
+    herramientas:"Fusion 360 - Router CNC",
+    descripcion:"Primero se modeló y simuló el mecanismo en Fusion 360. Luego se cortaron las piezas en router CNC, se imprimieron las restantes y se ensambló el prototipo.",
+    integrantes:["Felipe Villegas", "Lucas Sunnah", "María José Fuentealba"],
     medios:["montacarga/01.mp4", "montacarga/02.jpg"] },
-  { nombre:"Silla LCW", anio:"2025", sub:"Modelado 3D", forma:"alta",
+  { nombre:"Silla LCW", anio:"2025", ramo:"Taller de Diseño de Producto", sub:"Modelado 3D", forma:"alta",
+    objetivo:"Replicar en un modelo 3D una silla existente, la LCW de Charles y Ray Eames, para entender cómo se logran sus formas en el proceso de fabricación.",
+    tecnica:"Impresión FFF",
+    materiales:"PLA",
+    herramientas:"Rhinoceros",
+    descripcion:"Se tomaron las medidas y dimensiones de referencias en internet, se modeló en Rhinoceros y se imprimió a escala. Finalmente, las piezas se pintaron y se pegaron.",
+    integrantes:["Felipe Villegas", "Lucas Sunnah"],
     medios:["silla-lcw/01.jpg", "silla-lcw/02.jpg", "silla-lcw/03.jpg"] },
   { nombre:"Intervención UAI", anio:"2026", ramo:"Taller de Ecología y Paisaje", sub:"Iteración", forma:"cuadrada",
     objetivo:"Diseñar un sendero en el campus UAI Viña del Mar, con estructuras para compartir, descansar y estudiar.",
     descripcion:"Los puntos del sendero se eligieron recorriendo el campus y midiendo los decibeles de cada lugar. En la zona con más ruido ambiental se ubicó la estructura para compartir, y en las más silenciosas, columpios para descansar y un pabellón para estudiar.",
-    integrantes:["Lucas Sunnah", "María José Fuentealba", "Felipe Villegas"],
+    integrantes:["Felipe Villegas", "Lucas Sunnah", "María José Fuentealba"],
     medios:["intervencion-uai/01a-lamina.jpg", "intervencion-uai/01b-lamina.jpg", "intervencion-uai/01c-lamina.jpg", "intervencion-uai/01d-lamina.jpg"] },
-  { nombre:"Palmetas Aluminio", anio:"2026", sub:"Análogo Digital", forma:"media",
+  { nombre:"Palmetas Aluminio", anio:"2026", ramo:"Procesos de Fabricación de la Industria", sub:"Análogo Digital", forma:"media",
+    objetivo:"Complementar un proceso análogo, la fundición de aluminio, con uno digital: estampar una caja de arena con la presión de un brazo robótico y luego verter el aluminio fundido.",
+    tecnica:"Impresión FFF - Fundición de aluminio",
+    materiales:"Arena de moldeo - PLA - Aluminio",
+    herramientas:"Rhinoceros - Grasshopper - Brazo robótico KUKA - Horno de fundición",
+    descripcion:"La rutina del brazo se programó y probó en Grasshopper, y se imprimió la herramienta de estampado. Una vez probada, el brazo estampó la arena y en el molde resultante se vertió el aluminio fundido.",
+    integrantes:["Felipe Villegas", "Lucas Sunnah", "Lucas Díaz", "María José Fuentealba"],
     medios:["palmetas-aluminio/01.jpg", "palmetas-aluminio/02.jpg", "palmetas-aluminio/03.jpg", "palmetas-aluminio/04.jpg", "palmetas-aluminio/05.jpg"] },
-  { nombre:"Lookid", anio:"2025", sub:"Reto", columna:true, forma:"alta",
+  { nombre:"Lookid", anio:"2025", ramo:"Fabricación Digital", sub:"Reto", columna:true, forma:"alta",
+    objetivo:"Idear un objeto a partir de un stock de material entregado, que funcionara mediante encajes, y usar las simulaciones de fabricación de Fusion 360.",
+    tecnica:"Router CNC",
+    materiales:"MDF de 5,5 mm",
+    herramientas:"Fusion 360 - Router CNC",
+    descripcion:"Se modeló en Fusion 360, se simularon las trayectorias de corte y las piezas se cortaron en router CNC. Como postproceso, se lijaron las aristas.",
+    integrantes:["Individual"],
     medios:["lookid/01.jpg", "lookid/02.jpg", "lookid/03.jpg", "lookid/04a-lamina.jpg", "lookid/04b-lamina.jpg", "lookid/04c-lamina.jpg", "lookid/05.mp4"] },
-  { nombre:"Sheet Metal", anio:"2025", sub:"Fabricación Digital", forma:"cuadrada", encuadre:"50% 90%",
+  { nombre:"Sheet Metal", anio:"2025", ramo:"Fabricación Digital", sub:"Fabricación Digital", forma:"cuadrada", encuadre:"50% 90%",
+    objetivo:"Modelar una unión metálica del catálogo de Simpson Strong-Tie para aprender las herramientas de chapa metálica de Fusion 360, con foco en el plegado.",
+    tecnica:"Corte por chorro de agua (waterjet) - Plegado",
+    materiales:"Plancha de acero de 2 mm",
+    herramientas:"Fusion 360 - Waterjet - Plegadora - Lijadora orbital - Pulidora",
+    descripcion:"Se modeló la pieza en Fusion 360 y se simularon los dobleces para obtener su desarrollo plano, que se cortó en waterjet. Luego se pulió y, por último, se plegó en la plegadora.",
+    integrantes:["Individual"],
     medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg", "sheet-metal/03.mp4"] },
   { nombre:"Casa", anio:"2025", sub:"Arquitectura", forma:"cuadrada", encuadre:"50% 80%",
     medios:["casa/01.jpg", "casa/02.jpg", "casa/03.jpg"] },
@@ -249,14 +279,14 @@ const TRABAJOS = [
     objetivo:"Crear un sistema de módulos que dé sombra y deje pasar el viento, interpretando el movimiento orgánico de las hojas.",
     materiales:"Cartón forrado - Bolsas reutilizadas y compostables",
     descripcion:"Kuruf nace de los patrones que dejan las orugas al comer las hojas, formas que dejan pasar una luz tenue. Los módulos, livianos y unidos por encaje, se mueven con las corrientes de viento del cerro San Cristóbal y proyectan sombras dinámicas. Funciona como techo o pared en jardines, terrazas y espacios urbanos.",
-    integrantes:["Amanda Galté", "Lucas Sunnah", "María José Fuentealba", "Felipe Villegas"],
+    integrantes:["Felipe Villegas", "Lucas Sunnah", "Amanda Galté", "María José Fuentealba"],
     medios:["kuruf/01.mp4", "kuruf/02.jpg", "kuruf/03.mp4", "kuruf/04.mp4", "kuruf/05a-lamina.jpg", "kuruf/05b-lamina.jpg"] },
   { nombre:"Estructura", anio:"2026", sub:"Brazo robótico", columna:true, forma:"media",
     medios:["brazo-robotico/01.mp4", "brazo-robotico/02.jpg", "brazo-robotico/03.jpg", "brazo-robotico/04.jpg"] },
-  { nombre:"Resiliencia Forestal", anio:"2026", sub:"Investigación", forma:"alta",
+  { nombre:"Resiliencia Forestal", anio:"2026", ramo:"Taller de Ecología y Paisaje", sub:"Investigación", forma:"alta",
     objetivo:"Analizar el riesgo de incendios forestales en la cuenca del Marga Marga, en la Región de Valparaíso.",
     descripcion:"Las láminas cruzan temperatura, precipitaciones, suelos y vegetación para identificar dónde hay más material combustible. El estudio divide el paisaje en tres franjas: una de alta pendiente con especies vulnerables como la palma chilena, una de transición urbano-silvestre con flora endémica e invasora, y una urbana con especies ornamentales.",
-    integrantes:["María José Fuentealba", "Felipe Villegas", "Lucas Sunnah"],
+    integrantes:["Felipe Villegas", "Lucas Sunnah", "María José Fuentealba"],
     medios:["resiliencia-forestal/01.jpg", "resiliencia-forestal/02.jpg", "resiliencia-forestal/03a-lamina.jpg", "resiliencia-forestal/03b-lamina.jpg", "resiliencia-forestal/04.jpg"] },
   { nombre:"Chicharra", anio:"2024", sub:"Modelado 3D", forma:"media",
     medios:["chicharra/01.jpg", "chicharra/02.jpg", "chicharra/03.jpg", "chicharra/04.jpg", "chicharra/05.jpg", "chicharra/06.jpg"] },
@@ -271,14 +301,15 @@ const TRABAJOS = [
   { nombre:"Refugio", anio:"2025", ramo:"Taller de Diseño de Espacios", sub:"Arquitectura", forma:"media",
     objetivo:"Diseñar un refugio en el volcán Tolhuaca que, además de dar techo, capte y acumule el agua de deshielo para los montañistas.",
     descripcion:"El refugio se ubica en la ruta hacia la cima, con vista al volcán y a la Laguna Blanca. A partir de las siluetas de dos casas de referencia, se escalaron y reubicaron geometrías según la circulación de las personas, la gestión del agua y la necesidad de resguardo. Canales y espejos de agua hacen visible el ciclo del deshielo y convierten el refugio en un espacio contemplativo.",
-    integrantes:["María José Fuentealba", "Felipe Villegas", "Lucas Sunnah"],
+    integrantes:["Felipe Villegas", "Lucas Sunnah", "María José Fuentealba"],
     medios:["refugio/01.jpg", "refugio/02.jpg", "refugio/03.jpg", "refugio/04.jpg"] },
   { nombre:"Uniones Japonesas", anio:"2024", ramo:"Introducción a la Fabricación", sub:"Análogo", forma:"cuadrada",
-    objetivo:"Conectar 3 módulos cuadrados de madera en ángulos específicos, sin que hagan contacto entre sí y cuya unión se fabrique mediante piezas impresas en 3D y de madera.",
-    tecnica:"Impresión FFF",
-    materiales:"6 módulos de terciado de 100x100x12 mm - PLA - 6 tarugos",
-    herramientas:"Impresora Adventurer 3 - Rhinoceros 7 - Herramientas para madera",
-    descripcion:"Primero, se modelaron piezas mediante diseño generativo focalizadas en lograr 3 puntos de contacto por superficie. En el segundo caso, se usaron sobras de listones de pino que fueron cortados en una matriz angular y unidos mediante tarugos con los módulos principales.",
+    objetivo:"Replicar dos tipos de uniones japonesas para practicar y mostrar el oficio análogo.",
+    tecnica:"Carpintería manual",
+    materiales:"Pino cepillado",
+    herramientas:"Sierra - Escofinas - Lija",
+    descripcion:"Primero se trazaron y cortaron las piezas para lograr el calce. Luego se lijaron y, por último, se barnizaron por una de sus caras.",
+    integrantes:["Felipe Villegas", "Lucas Sunnah", "María José Fuentealba"],
     medios:["uniones-japonesas/01.jpg", "uniones-japonesas/02.jpg", "uniones-japonesas/03.jpg", "uniones-japonesas/04.jpg"] }
 ];
 
@@ -353,7 +384,7 @@ function mostrar(i){
 function abrir(trabajo){
   /* si el trabajo ya tiene su ficha, los campos que falten quedan vacíos (no se muestran) */
   const tieneFicha = CAMPOS.some(([k])=>trabajo[k]);
-  const vacios = tieneFicha ? Object.fromEntries(CAMPOS.map(([k])=>[k, ""])) : {};
+  const vacios = tieneFicha ? { ...Object.fromEntries(CAMPOS.map(([k])=>[k, ""])), ramo:"" } : {};
   const t = { ...RELLENO, ...vacios, ...trabajo };
   const medios = t.medios;
   carrusel.innerHTML = medios.map(m => medio(m, t, 'preload="none"')).join("")
@@ -367,10 +398,10 @@ function abrir(trabajo){
     <div class="cabeza">
       <span class="anio">${t.anio}</span>
       <h2 id="ficha-titulo">${t.nombre}</h2>
-      <span class="ramo">${t.ramo}</span>
+      ${t.ramo ? `<span class="ramo">${t.ramo}</span>` : ""}
     </div>
     <div class="detalle">${CAMPOS.filter(([k])=>t[k]).map(([k,nombre])=>`<p><b>${nombre}:</b> ${t[k]}</p>`).join("")}</div>
-    <div class="integrantes"><h3>Integrantes</h3><ul>${t.integrantes.map(n=>`<li>${n}</li>`).join("")}</ul></div>`;
+    ${tieneFicha && !t.integrantes.length ? "" : `<div class="integrantes"><h3>Integrantes</h3><ul>${t.integrantes.map(n=>`<li>${n}</li>`).join("")}</ul></div>`}`;
   document.getElementById("cerrar").addEventListener("click", ()=>ficha.close());
   mostrar(0);
   ficha.showModal();
