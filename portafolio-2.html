@@ -86,10 +86,9 @@
   .ficha{border:0;padding:0;width:min(1416px,100% - 24px);height:min(552px,100% - 24px);max-width:none;max-height:none;background:#393939;color:var(--texto);font-family:var(--mono);overflow:hidden}
   .ficha::backdrop{background:rgba(20,20,20,.75)}
   .ficha[open]{display:grid;grid-template-columns:1fr 1fr}
-  .carrusel{position:relative;background:var(--casilla);overflow:hidden;min-height:0}
-  .carrusel img,.carrusel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
+  .carrusel{position:relative;background:transparent;overflow:hidden;min-height:0}
+  .carrusel img,.carrusel video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#393939;opacity:0;transition:opacity .35s}
   .carrusel .activa{opacity:1}
-  .carrusel .lamina{object-fit:contain;background:#393939}  /* páginas de PDF: se ven completas */
   /* Flechas: solo la punta, en blanco y con trazo de 2 px */
   .carrusel button{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;z-index:1;filter:drop-shadow(0 0 4px rgba(0,0,0,.6))}
   .carrusel button::before{content:"";position:absolute;top:50%;left:50%;width:20px;height:20px;border-top:2px solid var(--texto);border-left:2px solid var(--texto)}
@@ -203,48 +202,47 @@
    orden; el primero es la portada del muro y la foto 1 del carrusel.
    Las que terminan en "-lamina" (páginas de PDF) se ven completas.
    "forma": ancha (2:1), media (4:3), cuadrada (1:1) o alta (3:4).
-   "area": Oficio, Fab digital, Idea o Escala (vacío si no tiene).
+   "sub": subtítulo bajo el nombre (vacío si no tiene).
+   "encuadre": opcional, qué parte de la portada se ve en el muro
+     ("50% 0%" arriba, "50% 100%" abajo). En el pop up las fotos
+     se ven siempre completas.
    Al hacer clic se abre su pop up. Datos del pop up
    (los que falten muestran el texto de RELLENO):
      anio, ramo, descripcion: textos
      integrantes: ["Nombre", ...]
    ========================================================= */
-const AREAS = {
-  "Oficio":"oficio.html", "Fab digital":"fab-digital.html",
-  "Idea":"idea.html", "Escala":"escala.html"
-};
 const TRABAJOS = [
-  { nombre:"Cacho Chileno", area:"Fab digital", forma:"media",
+  { nombre:"Cacho Chileno", sub:"Electrónica", forma:"media",
     medios:["cacho-chileno/01.jpg", "cacho-chileno/02.jpg", "cacho-chileno/03.jpg", "cacho-chileno/04-lamina.jpg"] },
-  { nombre:"Montacarga", area:"", forma:"media",
+  { nombre:"Montacarga", sub:"Reto", forma:"media",
     medios:["montacarga/01.mp4", "montacarga/02.jpg"] },
-  { nombre:"Silla LCW", area:"Oficio", forma:"alta",
+  { nombre:"Silla LCW", sub:"Modelado 3D", forma:"alta",
     medios:["silla-lcw/01.jpg", "silla-lcw/02.jpg", "silla-lcw/03.jpg"] },
-  { nombre:"Intervención UAI", area:"Idea", forma:"cuadrada",
+  { nombre:"Intervención UAI", sub:"Iteración", forma:"cuadrada",
     medios:["intervencion-uai/01a-lamina.jpg", "intervencion-uai/01b-lamina.jpg", "intervencion-uai/01c-lamina.jpg", "intervencion-uai/01d-lamina.jpg"] },
-  { nombre:"Juguete Stem", area:"Escala", forma:"alta",
-    medios:["juguete-stem/01.jpg", "juguete-stem/02.jpg", "juguete-stem/03.jpg"] },
-  { nombre:"Sheet Metal", area:"Oficio", forma:"alta",
-    medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg"] },
-  { nombre:"Casa", area:"Escala", forma:"alta",
-    medios:["casa/01.jpg", "casa/02.jpg"] },
-  { nombre:"Kuruf", area:"Idea", forma:"media",
-    medios:["kuruf/01.mp4", "kuruf/02.jpg", "kuruf/03.mp4", "kuruf/04.mp4", "kuruf/05a-lamina.jpg", "kuruf/05b-lamina.jpg"] },
-  { nombre:"Estudio Resiliencia Forestal", area:"", forma:"alta",
-    medios:["estudio-resiliencia-forestal/01.jpg", "estudio-resiliencia-forestal/02.jpg", "estudio-resiliencia-forestal/03a-lamina.jpg", "estudio-resiliencia-forestal/03b-lamina.jpg", "estudio-resiliencia-forestal/04.jpg"] },
-  { nombre:"Brazo robótico", area:"Fab digital", forma:"media",
-    medios:["brazo-robotico/01.mp4", "brazo-robotico/02.jpg", "brazo-robotico/03.jpg", "brazo-robotico/04.jpg"] },
-  { nombre:"Chicharra", area:"", forma:"media",
-    medios:["chicharra/01.jpg", "chicharra/02.jpg", "chicharra/03.jpg", "chicharra/04.jpg", "chicharra/05.jpg", "chicharra/06.jpg"] },
-  { nombre:"Manubrio F1", area:"Fab digital", forma:"media",
+  { nombre:"Manubrio F1", sub:"Fabricación Digital", forma:"media",
     medios:["manubrio-f1/01.jpg", "manubrio-f1/02.jpg", "manubrio-f1/03.jpg", "manubrio-f1/04.jpg"] },
-  { nombre:"Silla Parásito", area:"Escala", forma:"alta",
-    medios:["silla-parasito/01.jpg", "silla-parasito/02.jpg", "silla-parasito/03.jpg", "silla-parasito/04.jpg", "silla-parasito/05.jpg", "silla-parasito/06.jpg"] },
-  { nombre:"Lookid", area:"Idea", forma:"alta",
+  { nombre:"Sheet Metal", sub:"Fabricación Digital", forma:"cuadrada", encuadre:"50% 90%",
+    medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg"] },
+  { nombre:"Casa", sub:"Arquitectura", forma:"cuadrada", encuadre:"50% 80%",
+    medios:["casa/01.jpg", "casa/02.jpg"] },
+  { nombre:"Kuruf", sub:"Proyecto", forma:"media",
+    medios:["kuruf/01.mp4", "kuruf/02.jpg", "kuruf/03.mp4", "kuruf/04.mp4", "kuruf/05a-lamina.jpg", "kuruf/05b-lamina.jpg"] },
+  { nombre:"Brazo robótico", sub:"Estructura", forma:"media",
+    medios:["brazo-robotico/01.mp4", "brazo-robotico/02.jpg", "brazo-robotico/03.jpg", "brazo-robotico/04.jpg"] },
+  { nombre:"Resiliencia Forestal", sub:"Investigación", forma:"alta",
+    medios:["resiliencia-forestal/01.jpg", "resiliencia-forestal/02.jpg", "resiliencia-forestal/03a-lamina.jpg", "resiliencia-forestal/03b-lamina.jpg", "resiliencia-forestal/04.jpg"] },
+  { nombre:"Chicharra", sub:"Modelado 3D", forma:"media",
+    medios:["chicharra/01.jpg", "chicharra/02.jpg", "chicharra/03.jpg", "chicharra/04.jpg", "chicharra/05.jpg", "chicharra/06.jpg"] },
+  { nombre:"Juguete Stem", sub:"Prototipo", forma:"cuadrada", encuadre:"50% 20%",
+    medios:["juguete-stem/01.jpg", "juguete-stem/02.jpg", "juguete-stem/03.jpg"] },
+  { nombre:"Silla Parásito", sub:"Fabricación Digital", forma:"alta",
+    medios:["silla-parasito/01.jpg", "silla-parasito/02.jpg", "silla-parasito/03.jpg", "silla-parasito/04.jpg", "silla-parasito/05.jpg", "silla-parasito/06.jpg", "silla-parasito/07.jpg", "silla-parasito/08.mp4"] },
+  { nombre:"Lookid", sub:"Reto", forma:"alta",
     medios:["lookid/01.jpg", "lookid/02.jpg", "lookid/03.jpg", "lookid/04a-lamina.jpg", "lookid/04b-lamina.jpg", "lookid/04c-lamina.jpg"] },
-  { nombre:"Refugio", area:"", forma:"media",
-    medios:["refugio/01.jpg", "refugio/02.jpg"] },
-  { nombre:"Uniones Japonesas", area:"Oficio", forma:"cuadrada",
+  { nombre:"Refugio", sub:"Arquitectura", forma:"media",
+    medios:["refugio/01.jpg", "refugio/02.jpg", "refugio/03.jpg", "refugio/04.jpg"] },
+  { nombre:"Uniones Japonesas", sub:"Análogo", forma:"cuadrada",
     medios:["uniones-japonesas/01.jpg", "uniones-japonesas/02.jpg", "uniones-japonesas/03.jpg", "uniones-japonesas/04.jpg"] }
 ];
 
@@ -277,9 +275,10 @@ function medio(m, t, extra=""){
 }
 
 lista.innerHTML = TRABAJOS.map(t=>{
-  const foto = `<div class="foto ${t.forma}">${medio(t.medios[0], t, 'loading="lazy"')}</div>`;
-  const area = t.area ? `<span class="area-obra">${t.area}</span>` : "";
-  return `<a class="obra" href="${AREAS[t.area] || "#"}">${foto}<h2 class="chico">${t.nombre}</h2>${area}</a>`;
+  const encuadre = t.encuadre ? ` style="object-position:${t.encuadre}"` : "";
+  const foto = `<div class="foto ${t.forma}">${medio(t.medios[0], t, 'loading="lazy"' + encuadre)}</div>`;
+  const sub = t.sub ? `<span class="area-obra">${t.sub}</span>` : "";
+  return `<a class="obra" href="#">${foto}<h2 class="chico">${t.nombre}</h2>${sub}</a>`;
 }).join("");
 
 /* ---------- Pop up con carrusel ---------- */
