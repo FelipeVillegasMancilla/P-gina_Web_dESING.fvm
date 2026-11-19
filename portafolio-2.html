@@ -88,7 +88,7 @@
   .ficha::backdrop{background:rgba(20,20,20,.75)}
   .ficha[open]{display:grid;grid-template-columns:1fr 1fr}
   .carrusel{position:relative;background:transparent;overflow:hidden;min-height:0}
-  .carrusel img,.carrusel video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#393939;opacity:0;transition:opacity .35s}
+  .carrusel img,.carrusel video{position:absolute;inset:24px;width:calc(100% - 48px);height:calc(100% - 48px);object-fit:contain;background:#393939;opacity:0;transition:opacity .35s}
   .carrusel .activa{opacity:1}
   /* Flechas: solo la punta, en blanco y con trazo de 2 px */
   .carrusel button{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;z-index:1;filter:drop-shadow(0 0 4px rgba(0,0,0,.6))}
@@ -104,7 +104,7 @@
   .datos{position:relative;display:flex;flex-direction:column;justify-content:safe center;gap:24px;padding:44px 15px 36px 120px;text-align:right;color:var(--texto-suave);overflow:auto}
   .datos .cabeza{display:grid;grid-template-columns:auto 1fr;align-items:baseline}
   .datos .anio{text-align:left;font-size:22px;font-weight:300}
-  .datos h2{font-family:var(--titulo);font-size:20px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;color:var(--texto);margin:0}
+  .datos h2{font-family:var(--titulo);font-size:21.33px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;color:var(--texto);margin:0}
   .datos .ramo{grid-column:2}
   .datos p{margin:0}
   .datos .detalle{display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.45}
