@@ -102,8 +102,8 @@
   .puntos span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4)}
   .puntos .activa{background:var(--texto)}
   .datos{position:relative;display:flex;flex-direction:column;justify-content:safe center;gap:24px;padding:44px 15px 36px 120px;text-align:right;color:var(--texto-suave);overflow:auto}
-  .datos .cabeza{display:flex;flex-direction:column;align-items:flex-end}
-  .datos .anio{position:absolute;top:60px;left:120px;font-size:22px;font-weight:300}  /* entre el botón cerrar y el título */
+  .datos .cabeza{display:grid;grid-template-columns:auto 1fr;align-items:start;text-align:right}
+  .datos .anio{grid-row:1 / span 2;text-align:left;font-size:22px;font-weight:300;line-height:1.2}  /* a la altura del título */
   .datos h2{font-family:var(--titulo);font-size:21.33px;font-weight:400;text-transform:uppercase;letter-spacing:.03em;color:var(--texto);margin:0}
   .datos .ramo{grid-column:2}
   .datos p{margin:0}
@@ -128,7 +128,6 @@
     .barra{padding:32px 24px 0;font-size:17px}
     .muro{columns:2}
     .datos{padding-left:32px}
-    .datos .anio{left:32px}
     .otros{padding:120px 16px 0}
     .redes{gap:12px 64px}
   }
@@ -147,7 +146,6 @@
     .ficha[open]{grid-template-columns:1fr}
     .carrusel{aspect-ratio:4/3}
     .datos{padding:48px 16px 24px;gap:28px;overflow:visible}
-    .datos .anio{left:16px}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -224,12 +222,20 @@
    ========================================================= */
 const TRABAJOS = [
   { nombre:"Cacho Chileno", anio:"2026", sub:"Electrónica", forma:"media",
+    objetivo:"Agregar una variante al juego del cacho, en la que además de engañar a los demás jugadores hay que engañar a un dispositivo que detecta mentiras.",
+    tecnica:"Impresión FFF - Electrónica",
+    materiales:"PLA - Cuero vegano - ESP32-C3 - Sensor GSR - Sensor de pulso APDS-9008 - Batería LiPo 3,7 V 250 mAh - LEDs",
+    descripcion:"El juego incorpora un vaso con sensor galvánico y una pulsera con sensor de frecuencia cardíaca. Ambos leen el sudor y el pulso del jugador, calculan su nivel de estrés y lo muestran con una luz: verde si dice la verdad y roja si miente.",
+    integrantes:["Lucas Sunnah", "María José Fuentealba", "Felipe Villegas"],
     medios:["cacho-chileno/01.jpg", "cacho-chileno/02.jpg", "cacho-chileno/03.jpg", "cacho-chileno/04-lamina.jpg"] },
   { nombre:"Montacarga", anio:"2025", sub:"Reto", forma:"media",
     medios:["montacarga/01.mp4", "montacarga/02.jpg"] },
   { nombre:"Silla LCW", anio:"2025", sub:"Modelado 3D", forma:"alta",
     medios:["silla-lcw/01.jpg", "silla-lcw/02.jpg", "silla-lcw/03.jpg"] },
-  { nombre:"Intervención UAI", anio:"2026", sub:"Iteración", forma:"cuadrada",
+  { nombre:"Intervención UAI", anio:"2026", ramo:"Taller de Ecología y Paisaje", sub:"Iteración", forma:"cuadrada",
+    objetivo:"Diseñar un sendero en el campus UAI Viña del Mar, con estructuras para compartir, descansar y estudiar.",
+    descripcion:"Los puntos del sendero se eligieron recorriendo el campus y midiendo los decibeles de cada lugar. En la zona con más ruido ambiental se ubicó la estructura para compartir, y en las más silenciosas, columpios para descansar y un pabellón para estudiar.",
+    integrantes:["Lucas Sunnah", "María José Fuentealba", "Felipe Villegas"],
     medios:["intervencion-uai/01a-lamina.jpg", "intervencion-uai/01b-lamina.jpg", "intervencion-uai/01c-lamina.jpg", "intervencion-uai/01d-lamina.jpg"] },
   { nombre:"Palmetas Aluminio", anio:"2026", sub:"Análogo Digital", forma:"media",
     medios:["palmetas-aluminio/01.jpg", "palmetas-aluminio/02.jpg", "palmetas-aluminio/03.jpg", "palmetas-aluminio/04.jpg", "palmetas-aluminio/05.jpg"] },
@@ -239,11 +245,18 @@ const TRABAJOS = [
     medios:["sheet-metal/01.jpg", "sheet-metal/02.jpg", "sheet-metal/03.mp4"] },
   { nombre:"Casa", anio:"2025", sub:"Arquitectura", forma:"cuadrada", encuadre:"50% 80%",
     medios:["casa/01.jpg", "casa/02.jpg", "casa/03.jpg"] },
-  { nombre:"Kuruf", anio:"2024", sub:"Proyecto", forma:"media",
+  { nombre:"Kuruf", anio:"2024", ramo:"Taller de Diseño de Interfaces", sub:"Proyecto", forma:"media",
+    objetivo:"Crear un sistema de módulos que dé sombra y deje pasar el viento, interpretando el movimiento orgánico de las hojas.",
+    materiales:"Cartón forrado - Bolsas reutilizadas y compostables",
+    descripcion:"Kuruf nace de los patrones que dejan las orugas al comer las hojas, formas que dejan pasar una luz tenue. Los módulos, livianos y unidos por encaje, se mueven con las corrientes de viento del cerro San Cristóbal y proyectan sombras dinámicas. Funciona como techo o pared en jardines, terrazas y espacios urbanos.",
+    integrantes:["Amanda Galté", "Lucas Sunnah", "María José Fuentealba", "Felipe Villegas"],
     medios:["kuruf/01.mp4", "kuruf/02.jpg", "kuruf/03.mp4", "kuruf/04.mp4", "kuruf/05a-lamina.jpg", "kuruf/05b-lamina.jpg"] },
   { nombre:"Estructura", anio:"2026", sub:"Brazo robótico", columna:true, forma:"media",
     medios:["brazo-robotico/01.mp4", "brazo-robotico/02.jpg", "brazo-robotico/03.jpg", "brazo-robotico/04.jpg"] },
   { nombre:"Resiliencia Forestal", anio:"2026", sub:"Investigación", forma:"alta",
+    objetivo:"Analizar el riesgo de incendios forestales en la cuenca del Marga Marga, en la Región de Valparaíso.",
+    descripcion:"Las láminas cruzan temperatura, precipitaciones, suelos y vegetación para identificar dónde hay más material combustible. El estudio divide el paisaje en tres franjas: una de alta pendiente con especies vulnerables como la palma chilena, una de transición urbano-silvestre con flora endémica e invasora, y una urbana con especies ornamentales.",
+    integrantes:["María José Fuentealba", "Felipe Villegas", "Lucas Sunnah"],
     medios:["resiliencia-forestal/01.jpg", "resiliencia-forestal/02.jpg", "resiliencia-forestal/03a-lamina.jpg", "resiliencia-forestal/03b-lamina.jpg", "resiliencia-forestal/04.jpg"] },
   { nombre:"Chicharra", anio:"2024", sub:"Modelado 3D", forma:"media",
     medios:["chicharra/01.jpg", "chicharra/02.jpg", "chicharra/03.jpg", "chicharra/04.jpg", "chicharra/05.jpg", "chicharra/06.jpg"] },
@@ -255,7 +268,10 @@ const TRABAJOS = [
     medios:["silla-parasito/01.jpg", "silla-parasito/02.jpg", "silla-parasito/03.jpg", "silla-parasito/04.jpg", "silla-parasito/05.jpg", "silla-parasito/06.jpg", "silla-parasito/07.jpg", "silla-parasito/08.mp4"] },
   { nombre:"Manubrio F1", anio:"2025", sub:"Fabricación Digital", forma:"media",
     medios:["manubrio-f1/01.jpg", "manubrio-f1/02.jpg", "manubrio-f1/03.jpg", "manubrio-f1/04.jpg"] },
-  { nombre:"Refugio", anio:"2025", sub:"Arquitectura", forma:"media",
+  { nombre:"Refugio", anio:"2025", ramo:"Taller de Diseño de Espacios", sub:"Arquitectura", forma:"media",
+    objetivo:"Diseñar un refugio en el volcán Tolhuaca que, además de dar techo, capte y acumule el agua de deshielo para los montañistas.",
+    descripcion:"El refugio se ubica en la ruta hacia la cima, con vista al volcán y a la Laguna Blanca. A partir de las siluetas de dos casas de referencia, se escalaron y reubicaron geometrías según la circulación de las personas, la gestión del agua y la necesidad de resguardo. Canales y espejos de agua hacen visible el ciclo del deshielo y convierten el refugio en un espacio contemplativo.",
+    integrantes:["María José Fuentealba", "Felipe Villegas", "Lucas Sunnah"],
     medios:["refugio/01.jpg", "refugio/02.jpg", "refugio/03.jpg", "refugio/04.jpg"] },
   { nombre:"Uniones Japonesas", anio:"2024", ramo:"Introducción a la Fabricación", sub:"Análogo", forma:"cuadrada",
     objetivo:"Conectar 3 módulos cuadrados de madera en ángulos específicos, sin que hagan contacto entre sí y cuya unión se fabrique mediante piezas impresas en 3D y de madera.",
@@ -335,7 +351,10 @@ function mostrar(i){
 }
 
 function abrir(trabajo){
-  const t = { ...RELLENO, ...trabajo };
+  /* si el trabajo ya tiene su ficha, los campos que falten quedan vacíos (no se muestran) */
+  const tieneFicha = CAMPOS.some(([k])=>trabajo[k]);
+  const vacios = tieneFicha ? Object.fromEntries(CAMPOS.map(([k])=>[k, ""])) : {};
+  const t = { ...RELLENO, ...vacios, ...trabajo };
   const medios = t.medios;
   carrusel.innerHTML = medios.map(m => medio(m, t, 'preload="none"')).join("")
     + `<button class="anterior" aria-label="Foto anterior"></button><button class="siguiente" aria-label="Foto siguiente"></button>`
